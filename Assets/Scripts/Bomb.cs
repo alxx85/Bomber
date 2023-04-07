@@ -10,37 +10,39 @@ public class Bomb : MonoBehaviour
     
     private int _timer;
     private int _power;
-    private bool _stopAtBlock = true;
+    //private bool _stopAtBlock = true;
     private bool _isActivated = false;
     private bool _canStartAttack = true;
-    //private PlayerMovement _player;
+    private PlayerAttacks _player;
     private Collider _collider;
     private List<Destroying> _destroying = new List<Destroying>();
-    private Coroutine _activate;
+    private List<Character> _damaging= new List<Character>();
+    private Coroutine _startDelay;
+    private Coroutine _collision;
+
 
     private void Awake()
     {
         _collider = GetComponent<Collider>();
     }
 
-    public void Init(int TimeToActivate, int power)//, PlayerMovement character)
+    public void Init(int TimeToActivate, int power, PlayerAttacks character)
     {
-        //StartCoroutine(GetCollision());
-
         if (_isActivated == false)
         {
             _timer = TimeToActivate;
             _power = power;
 
-            //if (character != null)
-            //    _player = character;
-          
-            _activate = StartCoroutine(DelayingAttack());
+            if (character != null)
+                _player = character;
+
+            _startDelay = StartCoroutine(DelayingAttack());
+            _collision = StartCoroutine(GetCollision());
         }
         else if (_canStartAttack)
         {
             _timer = 0;
-            StopCoroutine(_activate);
+            StopCoroutine(_startDelay);
             StartAttack();
         }
     }
@@ -50,8 +52,8 @@ public class Bomb : MonoBehaviour
         Collider[] hit;
         do
         {
-            yield return new WaitForSeconds(0.1f);
-            hit = Physics.OverlapSphere(transform.position, 0.4f, _charactersMask);
+            yield return new WaitForSeconds(0.2f);
+            hit = Physics.OverlapSphere(transform.position, 0.5f, _charactersMask);
             //Debug.Log(hit[0].gameObject.name);
         } while (hit.Length > 0);
 
@@ -74,7 +76,7 @@ public class Bomb : MonoBehaviour
     {
         _canStartAttack = false;
         Activate();
-        Invoke(nameof(EndAttack), .5f);
+        EndAttack();
     }
 
     private void EndAttack()
@@ -84,10 +86,9 @@ public class Bomb : MonoBehaviour
             item.Destroy();
         }
 
-        //MoveController.SetBombs.Remove(gameObject);
-        //_player.BombDeactivated(this);
+        ResetState();
         Debug.Log(gameObject.name + " remove");
-        Destroy(gameObject);
+        _player.BombDeactivated(this);
     }
 
     private void Activate()
@@ -99,19 +100,18 @@ public class Bomb : MonoBehaviour
 
         for (int i = 1; i <= _power; i++)
         {
-            if (left || !_stopAtBlock)
+            if (left)
                 left = SetFireBlock(startPosition, -i, 0);
 
-            if (right || !_stopAtBlock)
+            if (right)
                 right = SetFireBlock(startPosition, i, 0);
 
-            if (up || !_stopAtBlock)
+            if (up)
                 up = SetFireBlock(startPosition, 0, i);
 
-            if (down || !_stopAtBlock)
+            if (down)
                 down = SetFireBlock(startPosition, 0, -i);
         }
-
     }
 
     private bool SetFireBlock(Vector3Int position, int x = 0, int z = 0)
@@ -126,7 +126,7 @@ public class Bomb : MonoBehaviour
 
         if (setPosition.x >= 0 && setPosition.x < 23 && setPosition.z >= 0 && setPosition.z < 13)
         {
-            Instantiate(_firePrefab, setPosition, Quaternion.identity, transform);
+            Instantiate(_firePrefab, setPosition, Quaternion.identity);
             Collider[] hit = Physics.OverlapSphere(setPosition, 0.45f, _destroyedMask);
 
             foreach (var item in hit)
@@ -142,9 +142,18 @@ public class Bomb : MonoBehaviour
                     if (nextBomb != this)
                     {
                         Debug.Log(item.gameObject.name + " true " + Time.time);
-                        nextBomb.Init(0, _power);//, null);
+                        nextBomb.Init(0, _power, null);
                         return false;
                     }
+                }
+                else if (item.TryGetComponent(out Character character))
+                {
+                    if (!_damaging.Contains(character))
+                    {
+                        _damaging.Add(character);
+                        Debug.Log(character.name);
+                    }
+                    return true;
                 }
             }
         }
@@ -156,17 +165,22 @@ public class Bomb : MonoBehaviour
         return true;
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.TryGetComponent(out PlayerMovement player))
-    //        _collider.isTrigger = false;
-    //}
-
     private Vector3Int ConvertPosition(Vector3 position) => new Vector3Int((int) position.x, 0, (int) position.z);
 
     private void OnGUI()
     {
         Vector3 position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up);
         GUI.Label(new Rect(position.x, Screen.height - position.y, 100, 100),_timer.ToString());
+    }
+
+    private void ResetState()
+    {
+        StopCoroutine(_startDelay);
+        StopCoroutine(_collision);
+        _isActivated = false;
+        _canStartAttack = true;
+        _destroying.Clear();
+        _damaging.Clear();
+        _collider.isTrigger = true;
     }
 }

@@ -10,7 +10,7 @@ public class PlayerMover : MonoBehaviour
 
     private CharacterController _controller;
     private Vector3 _moveDirection;
-    private Vector3 _rotateDirection;
+    private Vector3 _rotateDirection = Vector3.forward;
 
     private void Awake()
     {
