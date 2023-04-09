@@ -12,6 +12,8 @@ public class PlayerMover : MonoBehaviour
     private Vector3 _moveDirection;
     private Vector3 _rotateDirection = Vector3.forward;
 
+    public Vector3 Direction => _rotateDirection;
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();

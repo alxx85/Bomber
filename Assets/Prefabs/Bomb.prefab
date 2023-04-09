@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 2852896074146960446}
   - component: {fileID: -9003730968104527896}
   - component: {fileID: -8004142621645287975}
+  - component: {fileID: 5117670906451443074}
   m_Layer: 6
   m_Name: Bomb
   m_TagString: Untagged
@@ -234,6 +235,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.45
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!54 &5117670906451443074
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2985629492789990776}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &4919111969109332117
 GameObject:
   m_ObjectHideFlags: 0

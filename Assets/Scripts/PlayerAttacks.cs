@@ -5,14 +5,17 @@ using UnityEngine;
 public class PlayerAttacks : MonoBehaviour
 {
     private const string Jump = "Jump";
+    private const string Force = "Force";
 
     [SerializeField] private Bomb _templateBomb;
     [SerializeField] private int _bombDelay;
     [SerializeField] private int _bombCount;
     [SerializeField] private int _power;
+    [SerializeField] private LayerMask _destroyedMask;
 
     private List<Bomb> _bombsPool = new List<Bomb>();
     private List<Bomb> _installed = new List<Bomb>();
+    private PlayerMover _mover;
 
     private void Awake()
     {
@@ -22,6 +25,8 @@ public class PlayerAttacks : MonoBehaviour
             bomb.gameObject.SetActive(false);
             _bombsPool.Add(bomb);
         }
+
+        _mover = GetComponent<PlayerMover>();
     }
 
     private void Update()
@@ -31,9 +36,28 @@ public class PlayerAttacks : MonoBehaviour
             if (_bombsPool.Count > 0)
                 BombInstall();
         }
+
+        if (Input.GetButtonDown(Force))
+        {
+            Vector3 direction = _mover.Direction;
+            Vector3 bombPosition = GetRoundPosition() + direction;
+            Debug.Log("Force");
+            Collider[] hit = Physics.OverlapSphere(bombPosition, 0.45f, _destroyedMask);
+            
+            if (hit.Length > 0)
+            {
+
+                if (hit[0].TryGetComponent(out Bomb bomb))
+                {
+                    bomb.Move(direction);
+                    Debug.Log($"Move bomb to {direction}");
+                }
+            }
+        }
+
     }
 
-    internal void BombDeactivated(Bomb bomb)
+    public void BombDeactivated(Bomb bomb)
     {
         _installed.Remove(bomb);
         _bombsPool.Add(bomb);

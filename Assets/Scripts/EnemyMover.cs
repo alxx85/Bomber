@@ -55,6 +55,13 @@ public class EnemyMover : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (hit.collider.TryGetComponent(out PlayerAttacks player))
+        {
+            Debug.Log("Attack");
+            player.GetComponent<Character>().TakeDamage();
+        }
+
+        _controller.transform.position = GetRoundPosition();
         GetDirections();
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,6 @@ public class Bomb : MonoBehaviour
     
     private int _timer;
     private int _power;
-    //private bool _stopAtBlock = true;
     private bool _isActivated = false;
     private bool _canStartAttack = true;
     private PlayerAttacks _player;
@@ -19,11 +19,13 @@ public class Bomb : MonoBehaviour
     private List<Character> _damaging= new List<Character>();
     private Coroutine _startDelay;
     private Coroutine _collision;
+    private Rigidbody _body;
 
 
     private void Awake()
     {
         _collider = GetComponent<Collider>();
+        _body = GetComponent<Rigidbody>();
     }
 
     public void Init(int TimeToActivate, int power, PlayerAttacks character)
@@ -47,6 +49,11 @@ public class Bomb : MonoBehaviour
         }
     }
 
+    public void Move(Vector3 direction)
+    {
+        _body.velocity = direction * 5;
+    }
+
     private IEnumerator GetCollision()
     {
         Collider[] hit;
@@ -54,7 +61,6 @@ public class Bomb : MonoBehaviour
         {
             yield return new WaitForSeconds(0.2f);
             hit = Physics.OverlapSphere(transform.position, 0.5f, _charactersMask);
-            //Debug.Log(hit[0].gameObject.name);
         } while (hit.Length > 0);
 
         _collider.isTrigger = false;
@@ -84,6 +90,11 @@ public class Bomb : MonoBehaviour
         foreach (var item in _destroying)
         {
             item.Destroy();
+        }
+
+        foreach (var character in _damaging)
+        {
+            character.TakeDamage();
         }
 
         ResetState();
@@ -165,7 +176,7 @@ public class Bomb : MonoBehaviour
         return true;
     }
 
-    private Vector3Int ConvertPosition(Vector3 position) => new Vector3Int((int) position.x, 0, (int) position.z);
+    private Vector3Int ConvertPosition(Vector3 position) => new Vector3Int(Mathf.RoundToInt(position.x), 0, Mathf.RoundToInt(position.z));
 
     private void OnGUI()
     {
@@ -182,5 +193,6 @@ public class Bomb : MonoBehaviour
         _destroying.Clear();
         _damaging.Clear();
         _collider.isTrigger = true;
+        _body.velocity = Vector3.zero;
     }
 }
