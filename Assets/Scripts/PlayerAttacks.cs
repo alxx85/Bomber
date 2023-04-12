@@ -17,6 +17,8 @@ public class PlayerAttacks : MonoBehaviour
     private int _bombAmound;
     private int _bombPower;
     private bool _canKick = false;
+    private KeyCode _setBombButton = KeyCode.Space;
+    private KeyCode _kickBombButton = KeyCode.E;
 
     private void Awake()
     {
@@ -37,7 +39,7 @@ public class PlayerAttacks : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown(Jump))
+        if(Input.GetKeyDown(_setBombButton))
         {
             if (_bombsPool.Count > 0 && _bombAmound > 0)
             {
@@ -46,7 +48,7 @@ public class PlayerAttacks : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown(Force) && _canKick)
+        if (Input.GetKeyDown(_kickBombButton) && _canKick)
         {
             Vector3 direction = _mover.Direction;
             Vector3 bombPosition = GetRoundPosition() + direction;
@@ -80,6 +82,8 @@ public class PlayerAttacks : MonoBehaviour
         _bombPower = _setting.Power;
         _canKick = _setting.CanKick;
         _bombsPool = _setting.BombPool;
+        _setBombButton = _setting.SetBombKey;
+        _kickBombButton = _setting.KickBombKey;
     }
 
     private void BombInstall()

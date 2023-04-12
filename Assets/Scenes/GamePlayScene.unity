@@ -304,10 +304,18 @@ MonoBehaviour:
   _lifes: 2
   _speed: 2
   _bombAmount: 1
-  _bombPower: 1
+  _bombPower: 2
   _canKickBomb: 0
   _useShield: 0
+  _maxSpeed: 6
   _maxBombAmount: 8
+  _maxBombPower: 10
+  LeftKey: 97
+  RightKey: 100
+  ForwardKey: 119
+  BackKey: 115
+  SetBombKey: 32
+  KickBombKey: 101
 --- !u!4 &1286121491
 Transform:
   m_ObjectHideFlags: 0

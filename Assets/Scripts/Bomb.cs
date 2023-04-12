@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
+    private const int BlockCount = 2;
+
     [SerializeField] private Fire _firePrefab;
     [SerializeField] private LayerMask _destroyedMask;
     [SerializeField] private LayerMask _charactersMask;
@@ -137,7 +139,8 @@ public class Bomb : MonoBehaviour
 
         Vector3 setPosition = new Vector3(position.x + x, 0, position.z + z);
 
-        if (setPosition.x >= 0 && setPosition.x < _setting.Width && setPosition.z >= 0 && setPosition.z < _setting.Height)
+        if (setPosition.x >= 0 && setPosition.x < _setting.Width - BlockCount && setPosition.z >= 0 
+            && setPosition.z < _setting.Height - BlockCount)
         {
             Instantiate(_firePrefab, setPosition, Quaternion.identity);
             Collider[] hit = Physics.OverlapSphere(setPosition, 0.45f, _destroyedMask);

@@ -7,6 +7,10 @@ public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance;
 
+    private const int BoostAmount = 1;
+    private const int BoostZero = 0;
+    private const float BoostSpeedRate = .5f;
+
     [Header("Level")]
     [SerializeField] private int _levelNumber;
     [SerializeField] private WorldGenerator _world;
@@ -15,19 +19,30 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private Bomb _templateBomb;
     [SerializeField] private int _currentLevel;
     [SerializeField] private int _lifes;
-    [SerializeField] private int _speed;
+    [SerializeField] private float _speed;
     [SerializeField] private int _bombAmount;
     [SerializeField] private int _bombPower;
     [SerializeField] private bool _canKickBomb;
     [SerializeField] private bool _useShield;
+    [Header("Limit Properties")]
+    [SerializeField] private int _maxSpeed = 6;
     [SerializeField] private int _maxBombAmount = 8; 
+    [SerializeField] private int _maxBombPower = 10;
+
+    [Header("Player Input")]
+    public KeyCode LeftKey;
+    public KeyCode RightKey;
+    public KeyCode ForwardKey;
+    public KeyCode BackKey;
+    public KeyCode SetBombKey;
+    public KeyCode KickBombKey;
 
     private List<Character> _levelEnemys = new List<Character>();
     private List<Bomb> _bombPool = new List<Bomb>();
     private List<LevelSetting> _levels = new List<LevelSetting>();
 
     public int Lifes => _lifes;
-    public int Speed => _speed;
+    public float Speed => _speed;
     public int Bomb => _bombAmount;
     public int Power => _bombPower;
     public bool CanKick => _canKickBomb;
@@ -35,7 +50,6 @@ public class GameSettings : MonoBehaviour
     public int Width => _levels[_currentLevel - 1].Width;
     public int Height => _levels[_currentLevel - 1].Height;
     public List<Bomb> BombPool => _bombPool;
-
 
     public event Action ChangedPlayerProperties;
 
@@ -99,13 +113,16 @@ public class GameSettings : MonoBehaviour
 
     private void OnPickup(Boost booster)
     {
-        _lifes += booster.Life ? 1 : 0;
-        _speed += booster.Speed ? 1 : 0;
+        _lifes += booster.Life ? BoostAmount : BoostZero;
+        
+        if (_speed < _maxSpeed)
+            _speed += booster.Speed ? BoostAmount * BoostSpeedRate : BoostZero;
 
         if (_bombAmount < _maxBombAmount)
-            _bombAmount += booster.BombAmount ? 1 : 0;
+            _bombAmount += booster.BombAmount ? BoostAmount : BoostZero;
         
-        _bombPower += booster.BombPower ? 1 : 0;
+        if (_bombPower < _maxBombPower)
+            _bombPower += booster.BombPower ? BoostAmount : BoostZero;
 
         if (_canKickBomb == false)
             _canKickBomb = booster.Kick;
