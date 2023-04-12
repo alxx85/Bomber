@@ -7,37 +7,46 @@ public class PlayerAttacks : MonoBehaviour
     private const string Jump = "Jump";
     private const string Force = "Force";
 
-    [SerializeField] private Bomb _templateBomb;
     [SerializeField] private int _bombDelay;
-    [SerializeField] private int _bombCount;
-    [SerializeField] private int _power;
     [SerializeField] private LayerMask _destroyedMask;
 
     private List<Bomb> _bombsPool = new List<Bomb>();
     private List<Bomb> _installed = new List<Bomb>();
+    private GameSettings _setting;
     private PlayerMover _mover;
+    private int _bombAmound;
+    private int _bombPower;
+    private bool _canKick = false;
 
     private void Awake()
     {
-        for (int i = 0; i < _bombCount; i++)
-        {
-            Bomb bomb = Instantiate(_templateBomb, Vector3.zero, Quaternion.identity);
-            bomb.gameObject.SetActive(false);
-            _bombsPool.Add(bomb);
-        }
-
         _mover = GetComponent<PlayerMover>();
+    }
+
+    private void OnDisable()
+    {
+        _setting.ChangedPlayerProperties -= InitAttack;
+    }
+
+    private void Start()
+    {
+        _setting = GameSettings.Instance;
+        _setting.ChangedPlayerProperties += InitAttack;
+        InitAttack();
     }
 
     private void Update()
     {
         if(Input.GetButtonDown(Jump))
         {
-            if (_bombsPool.Count > 0)
+            if (_bombsPool.Count > 0 && _bombAmound > 0)
+            {
                 BombInstall();
+                _bombAmound--;
+            }
         }
 
-        if (Input.GetButtonDown(Force))
+        if (Input.GetButtonDown(Force) && _canKick)
         {
             Vector3 direction = _mover.Direction;
             Vector3 bombPosition = GetRoundPosition() + direction;
@@ -61,7 +70,16 @@ public class PlayerAttacks : MonoBehaviour
     {
         _installed.Remove(bomb);
         _bombsPool.Add(bomb);
+        _bombAmound++;
         bomb.gameObject.SetActive(false);
+    }
+
+    private void InitAttack()
+    {
+        _bombAmound = _setting.Bomb;
+        _bombPower = _setting.Power;
+        _canKick = _setting.CanKick;
+        _bombsPool = _setting.BombPool;
     }
 
     private void BombInstall()
@@ -71,7 +89,7 @@ public class PlayerAttacks : MonoBehaviour
         _bombsPool.Remove(bomb);
         bomb.transform.position = GetRoundPosition();
         bomb.gameObject.SetActive(true);
-        bomb.Init(_bombDelay, _power, this);
+        bomb.Init(_bombDelay, _bombPower, this);
     }
 
     private Vector3 GetRoundPosition()

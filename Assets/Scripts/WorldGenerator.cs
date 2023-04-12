@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,31 +8,29 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private GameObject _stoneBlock;
     [SerializeField] private GameObject _brickBlock;
     [SerializeField] private GameObject _floorBlock;
-    [SerializeField] private int _brickBlockValue;
     [SerializeField] private Transform _worldZeroPoint;
-    //[SerializeField] private EnemyMovement _enemy1;
-    [SerializeField] private EnemyMover _enemy2;
-    [SerializeField] private int _enemyValue;
+    [SerializeField] private Character _enemy;
 
-    //private Settings _settings;
-    private List<Vector3Int> _blockeds;
-    private List<Vector3Int> _clearBlocks;
-    [SerializeField] private int _xFieldSize;
-    [SerializeField] private int _zFieldSize;
+    private GameSettings _settings;
+    private List<Vector3Int> _blockeds = new List<Vector3Int>();
+    private List<Vector3Int> _clearBlocks = new List<Vector3Int>();
+    private int _xFieldSize;
+    private int _zFieldSize;
+    private int _brickBlockAmount;
+    private int _enemyAmount;
     private int[,] _world;
 
-    private void Awake()
+    public void InitWorldSetting(GameSettings settings, LevelSetting levelSetting)
     {
-        //_settings = GetComponent<Settings>();
-        //_xFieldSize = _settings.GetFloorSizeX();
-        //_zFieldSize = _settings.GetFloorSizeZ();
-        _blockeds = new List<Vector3Int>();
-        _clearBlocks = new List<Vector3Int>();
+        _settings = settings;
+        _xFieldSize = levelSetting.Width;
+        _zFieldSize = levelSetting.Height;
+        _brickBlockAmount = levelSetting.BrickBlockAmount;
+        _enemyAmount = levelSetting.EnemyAmount;
         _world = new int[_xFieldSize, _zFieldSize];
-    }
+        //_blockeds = new List<Vector3Int>();
+        //_clearBlocks = new List<Vector3Int>();
 
-    private void Start()
-    {
         CreateWorldPlace();
         CreateBricksBlock();
 
@@ -56,9 +55,9 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        if (_brickBlockValue + _enemyValue <= _clearBlocks.Count())
+        if (_brickBlockAmount + _enemyAmount <= _clearBlocks.Count())
         {
-            for (int i = 0; i < _brickBlockValue; i++)
+            for (int i = 0; i < _brickBlockAmount; i++)
             {
                 int position = random.Next(_clearBlocks.Count());
                 Vector3Int SetPosition = _clearBlocks[position];
@@ -66,7 +65,7 @@ public class WorldGenerator : MonoBehaviour
                 _world[SetPosition.x, SetPosition.z] = 2;
             }
 
-            for (int i = 0; i < _enemyValue; i++)
+            for (int i = 0; i < _enemyAmount; i++)
             {
                 int position = random.Next(_clearBlocks.Count());
                 Vector3Int SetPosition = _clearBlocks[position];
@@ -87,8 +86,7 @@ public class WorldGenerator : MonoBehaviour
                     _world[x, z] = 1;
                     _blockeds.Add(new Vector3Int(x, 0, z));
                 }
-
-                if ((x % 2 == 0 && z % 2 == 0))
+                else if ((x % 2 == 0 && z % 2 == 0))
                 {
                     _world[x, z] = 1;
                     _blockeds.Add(new Vector3Int(x, 0, z));
@@ -113,8 +111,10 @@ public class WorldGenerator : MonoBehaviour
                     Instantiate(_brickBlock, _worldZeroPoint.position + new Vector3(x, 0.5f, z), Quaternion.identity, _worldZeroPoint);
 
                 if (_world[x, z] == 3)
-                    Instantiate(_enemy2, _worldZeroPoint.position + new Vector3(x, 0f, z), Quaternion.identity);
-
+                {
+                    Character enemy = Instantiate(_enemy, _worldZeroPoint.position + new Vector3(x, 0f, z), Quaternion.identity);
+                    _settings.AddEnemyOnList(enemy);
+                }
             }
         }
     }

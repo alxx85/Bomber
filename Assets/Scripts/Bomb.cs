@@ -8,11 +8,8 @@ public class Bomb : MonoBehaviour
     [SerializeField] private Fire _firePrefab;
     [SerializeField] private LayerMask _destroyedMask;
     [SerializeField] private LayerMask _charactersMask;
-    
-    private int _timer;
-    private int _power;
-    private bool _isActivated = false;
-    private bool _canStartAttack = true;
+
+    private GameSettings _setting;
     private PlayerAttacks _player;
     private Collider _collider;
     private List<Destroying> _destroying = new List<Destroying>();
@@ -20,10 +17,15 @@ public class Bomb : MonoBehaviour
     private Coroutine _startDelay;
     private Coroutine _collision;
     private Rigidbody _body;
+    private int _timer;
+    private int _power;
+    private bool _isActivated = false;
+    private bool _canStartAttack = true;
 
 
-    private void Awake()
+    private void Start()
     {
+        _setting = GameSettings.Instance;
         _collider = GetComponent<Collider>();
         _body = GetComponent<Rigidbody>();
     }
@@ -135,7 +137,7 @@ public class Bomb : MonoBehaviour
 
         Vector3 setPosition = new Vector3(position.x + x, 0, position.z + z);
 
-        if (setPosition.x >= 0 && setPosition.x < 23 && setPosition.z >= 0 && setPosition.z < 13)
+        if (setPosition.x >= 0 && setPosition.x < _setting.Width && setPosition.z >= 0 && setPosition.z < _setting.Height)
         {
             Instantiate(_firePrefab, setPosition, Quaternion.identity);
             Collider[] hit = Physics.OverlapSphere(setPosition, 0.45f, _destroyedMask);

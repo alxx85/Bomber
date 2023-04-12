@@ -7,11 +7,11 @@ public class EnemyMover : MonoBehaviour
 {
     
     [SerializeField] private Vector3 _moveDirection = Vector3.zero;
+    [SerializeField] private float _speed = 2f;
 
     private List<Vector3> _possibleDirections = new List<Vector3> { Vector3.left, Vector3.forward, Vector3.back, Vector3.right };
     private CharacterController _controller;
     private Animator _animator;
-    private float _speed = 2f;
     private float _rotationSpeed = 0.1f;
     private System.Random _getRandom = new System.Random();
 
@@ -33,11 +33,6 @@ public class EnemyMover : MonoBehaviour
     {
         List<Vector3> blockedDirections = GetBlockedDirection();
         List<Vector3> directions = _possibleDirections.Except(blockedDirections).ToList();
-        
-        foreach (var direction in directions)
-        {
-            Debug.Log(direction);
-        }
 
         int directionIndex = _getRandom.Next(directions.Count());
         _moveDirection = directions[directionIndex] * -1;
@@ -61,7 +56,6 @@ public class EnemyMover : MonoBehaviour
             player.GetComponent<Character>().TakeDamage();
         }
 
-        _controller.transform.position = GetRoundPosition();
         GetDirections();
     }
 

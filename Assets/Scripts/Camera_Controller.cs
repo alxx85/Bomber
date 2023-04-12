@@ -2,18 +2,19 @@
 
 public class Camera_Controller : MonoBehaviour
 {
-    [SerializeField] private Transform player;
+    [SerializeField] private Transform _player;
     [SerializeField] private float _moveSpeed;
 
     private Vector3 distance;
 
     private void Start()
     {
-        distance = transform.position - player.position;
+        distance = transform.position - _player.position;
     }
 
     private void LateUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, player.position + distance, _moveSpeed * Time.deltaTime);
+        if (_player != null)
+            transform.position = Vector3.Lerp(transform.position, _player.position + distance, _moveSpeed * Time.deltaTime);
     }
 }
