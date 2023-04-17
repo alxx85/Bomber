@@ -10,6 +10,9 @@ public class Bomb : MonoBehaviour
     [SerializeField] private Fire _firePrefab;
     [SerializeField] private LayerMask _destroyedMask;
     [SerializeField] private LayerMask _charactersMask;
+    [SerializeField] private AnimationCurve _sizeAnimation;
+    [SerializeField] private AnimationCurve _colorAnimation;
+    [SerializeField] private Renderer[] _bombMaterial;
 
     private GameSettings _setting;
     private PlayerAttacks _player;
@@ -23,13 +26,31 @@ public class Bomb : MonoBehaviour
     private int _power;
     private bool _isActivated = false;
     private bool _canStartAttack = true;
-
+    private float _currentTime = 0;
+    private float _currentColorTime = 0;
+    private float _totalTime;
 
     private void Start()
     {
+        _totalTime = _sizeAnimation.keys[_sizeAnimation.keys.Length - 1].time;
         _setting = GameSettings.Instance;
         _collider = GetComponent<Collider>();
         _body = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        float currentSize = _sizeAnimation.Evaluate(_currentTime);
+        transform.localScale = new Vector3(transform.localScale.x, currentSize, transform.localScale.z);
+        _currentTime += Time.deltaTime;
+
+        if (_currentTime >= _totalTime)
+            _currentTime -= _totalTime;
+        
+        _currentColorTime += Time.deltaTime;
+
+        for (int i = 0; i < _bombMaterial.Length; i++)
+            _bombMaterial[i].material.color = new Color(_colorAnimation.Evaluate(_currentColorTime), 0, 0);
     }
 
     public void Init(int TimeToActivate, int power, PlayerAttacks character)
@@ -37,6 +58,7 @@ public class Bomb : MonoBehaviour
         if (_isActivated == false)
         {
             _timer = TimeToActivate;
+            _currentColorTime = -TimeToActivate + 1;
             _power = power;
 
             if (character != null)
@@ -186,7 +208,7 @@ public class Bomb : MonoBehaviour
     private void OnGUI()
     {
         Vector3 position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up);
-        GUI.Label(new Rect(position.x, Screen.height - position.y, 100, 100),_timer.ToString());
+        GUI.Label(new Rect(position.x, Screen.height - position.y, 50, 50),_timer.ToString());
     }
 
     private void ResetState()

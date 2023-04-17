@@ -12,12 +12,13 @@ public class GameSettings : MonoBehaviour
     private const float BoostSpeedRate = .5f;
 
     [Header("Level")]
-    [SerializeField] private int _levelNumber;
+//    [SerializeField] private int _levelNumber;
+    [SerializeField] private GameLevels _levels;
     [SerializeField] private WorldGenerator _world;
     [Header("Player")]
     [SerializeField] private PlayerMover _player;
     [SerializeField] private Bomb _templateBomb;
-    [SerializeField] private int _currentLevel;
+    [SerializeField] private int _currentLevel = 0;
     [SerializeField] private int _lifes;
     [SerializeField] private float _speed;
     [SerializeField] private int _bombAmount;
@@ -39,7 +40,8 @@ public class GameSettings : MonoBehaviour
 
     private List<Character> _levelEnemys = new List<Character>();
     private List<Bomb> _bombPool = new List<Bomb>();
-    private List<LevelSetting> _levels = new List<LevelSetting>();
+    //private List<LevelSetting> _levels = new List<LevelSetting>();
+    private LevelSetting _level;
 
     public int Lifes => _lifes;
     public float Speed => _speed;
@@ -47,8 +49,8 @@ public class GameSettings : MonoBehaviour
     public int Power => _bombPower;
     public bool CanKick => _canKickBomb;
     public bool UseShield => _useShield;
-    public int Width => _levels[_currentLevel - 1].Width;
-    public int Height => _levels[_currentLevel - 1].Height;
+    public int Width => _level.Width; //_levels[_currentLevel - 1].Width;
+    public int Height => _level.Height; //_levels[_currentLevel - 1].Height;
     public List<Bomb> BombPool => _bombPool;
 
     public event Action ChangedPlayerProperties;
@@ -61,11 +63,11 @@ public class GameSettings : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(this);
-
-        _levels.Add(new LevelSetting(1, 15, 15, 1, 25, 2));
+        _level = _levels.GetLevelSetting(_currentLevel);
+        //_levels.Add(new LevelSetting(1, 15, 15, 1, 112, 2));
 
         CreatBombPool();
-        _world.InitWorldSetting(this, _levels[_currentLevel - 1]);
+        _world.InitWorldSetting(this, _level);//_levels[_currentLevel - 1]);
     }
 
     private void OnEnable()
@@ -132,46 +134,5 @@ public class GameSettings : MonoBehaviour
 
         Debug.Log("Pickup");
         ChangedPlayerProperties?.Invoke();
-    }
-}
-
-
-public class LevelSetting
-{
-    public int Level { get; private set; }
-    public int Width { get; private set; }
-    public int Height { get; private set; }
-    public int BoostAmount { get; private set; }
-    public int BrickBlockAmount { get; private set; }
-    public int EnemyAmount { get; private set; }
-
-    public LevelSetting(int level, int width, int height, int boostAmount, int brickAmount, int enemyAmount)
-    {
-        Level = level;
-        Width = width;
-        Height = height;
-        BoostAmount = boostAmount;
-        BrickBlockAmount = brickAmount;
-        EnemyAmount = enemyAmount;
-    }
-}
-
-public class Boost
-{
-    public bool Life { get; private set; }
-    public bool Speed { get; private set; }
-    public bool BombAmount { get; private set; }
-    public bool BombPower { get; private set; }
-    public bool Kick { get; private set; }
-    public bool Shield { get; private set; }
-
-    public Boost(bool life, bool speed, bool amount, bool power, bool kick, bool shield)
-    {
-        Life = life;
-        Speed = speed;
-        BombAmount = amount;
-        BombPower = power;
-        Kick = kick;
-        Shield = shield;
     }
 }

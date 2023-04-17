@@ -1,28 +1,30 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-public class EnemyMover : MonoBehaviour
+public class EnemyDirectionMove : MonoBehaviour
 {
+    [SerializeField] private Vector3 _moveDirection = Vector3.zero;
     [SerializeField] private float _speed = 1f;
-    [SerializeField] private float _stopMoveingDelay = .8f;
+    [SerializeField] private float _stopMoveingDelay = .1f;
     [SerializeField] private LayerMask _blockedMask;
-    [SerializeField] private bool _isFreeChangedDirection;
+    [SerializeField] private bool _canChangingDirection;
 
     private List<Vector3> _possibleDirections = new List<Vector3> { Vector3.left, Vector3.forward, Vector3.back, Vector3.right };
     private CharacterController _controller;
     private Animator _animator;
-    private Vector3 _moveDirection = Vector3.zero;
     private float _rotationSpeed = 0.1f;
     private System.Random _getRandom = new System.Random();
     private float _blockedSearchDelay = .5f;
     private float _currentDelay;
     private bool _isBlocked;
+    private Vector3 oldPosition;
+    private bool _canChangeDirection;
 
     private void Start()
     {
         _controller = gameObject.GetComponent<CharacterController>();
+        GetDirections();
         _currentDelay = 0;
         _isBlocked = false;
     }
@@ -31,11 +33,10 @@ public class EnemyMover : MonoBehaviour
     {
         Rotation();
 
-
         if (_moveDirection != Vector3.zero)
         {
-                    MoveingPlayer();
-                    _currentDelay = 0;
+            MoveingPlayer();
+            _currentDelay = 0;
         }
         else
         {
@@ -56,6 +57,30 @@ public class EnemyMover : MonoBehaviour
                 }
             }
         }
+
+        if (_canChangingDirection)
+        {
+            if (oldPosition != GetRoundPosition())
+            {
+                _canChangeDirection = false;
+                oldPosition = GetRoundPosition();
+            }
+
+            if (_canChangeDirection == false)
+            {
+                Vector3 approximatePosition = GetApproximatePosition();
+                float approximate = .5f - _controller.radius;
+
+                if (Mathf.Abs(approximatePosition.x) < approximate && Mathf.Abs(approximatePosition.z) < approximate)
+                {
+                    if (GetRoundPosition().x % 2 == 0 && GetRoundPosition().z % 2 == 0)
+                    {
+                        _moveDirection = Vector3.zero;
+                        _canChangeDirection = true;
+                    }
+                }
+            }
+        }
     }
 
     private void GetDirections()
@@ -67,7 +92,7 @@ public class EnemyMover : MonoBehaviour
         if (directions.Count > 0)
         {
             int directionIndex = _getRandom.Next(directions.Count());
-            _moveDirection = directions[directionIndex] * -1;
+            _moveDirection = directions[directionIndex];
         }
         else
         {
@@ -90,11 +115,12 @@ public class EnemyMover : MonoBehaviour
     {
         if (hit.collider.TryGetComponent(out PlayerAttacks player))
         {
-            Debug.Log($"Attacked player on direction {hit.point - transform.TransformPoint(player.transform.position)}");
+            Debug.Log("Attack");
             player.GetComponent<Character>().TakeDamage();
         }
 
         _moveDirection = Vector3.zero;
+        //GetDirections();
     }
 
     private List<Vector3> GetBlockedDirection()
@@ -107,7 +133,7 @@ public class EnemyMover : MonoBehaviour
 
         foreach (var item in colliders)
         {
-            Vector3 direction = position - item.transform.position;
+            Vector3 direction = item.transform.position - position;
             blockedDirection.Add(direction);
         }
 
@@ -121,5 +147,19 @@ public class EnemyMover : MonoBehaviour
         currentPosition.y = 0f;
         currentPosition.z = Mathf.RoundToInt(currentPosition.z);
         return currentPosition;
+    }
+
+    private Vector3 GetApproximatePosition()
+    {
+        float roundPositionX = transform.position.x - GetRoundPosition().x;
+        float roundPositionZ = transform.position.z - GetRoundPosition().z;
+
+        if (Mathf.Abs(roundPositionX) > 0.6f)
+            roundPositionX -= 1;
+
+        if (Mathf.Abs(roundPositionZ) > 0.6f)
+            roundPositionZ -= 1;
+
+        return new Vector3(roundPositionX, 0, roundPositionZ);
     }
 }

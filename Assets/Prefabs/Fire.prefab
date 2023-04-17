@@ -46,6 +46,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _delay: 0.5
+  _fireAnimation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0000033250544
+      value: 0.29481873
+      inSlope: -0.024849987
+      outSlope: -0.024849987
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.51060337
+    - serializedVersion: 3
+      time: 0.25005704
+      value: 0.9998422
+      inSlope: -0.59062576
+      outSlope: -0.59062576
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.50004214
+      value: -0.0002644062
+      inSlope: -0.0058528427
+      outSlope: -0.0058528427
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.56285506
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6434361731521848819
 GameObject:
   m_ObjectHideFlags: 0

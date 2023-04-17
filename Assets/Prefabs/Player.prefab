@@ -131,7 +131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9cc0261da5d584ca0ddb240674fa55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
   _rotateSpeed: 0.1
 --- !u!143 &7929205472317556042
 CharacterController:
@@ -163,10 +162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d56e70f80a22c4eaf553fdd1ff2123, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _templateBomb: {fileID: -9003730968104527896, guid: 9fd43a50e34104845a83dac09fd16569, type: 3}
-  _bombDelay: 4
-  _bombCount: 1
-  _power: 2
+  _bombDelay: 3
+  _destroyedMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &9120324796785550888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,6 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d88e49f85c4142bff58bb4052bbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health: 0
+  _isPlayer: 0
 --- !u!1 &7929205472607404899
 GameObject:
   m_ObjectHideFlags: 0

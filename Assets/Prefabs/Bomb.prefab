@@ -26,9 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082880915449234862}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.90000004, y: 0.90000004, z: 0.90000004}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1352959290873839356}
   m_Father: {fileID: 2852896074146960446}
@@ -178,8 +178,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2852896074146960446}
   - component: {fileID: -9003730968104527896}
-  - component: {fileID: -8004142621645287975}
   - component: {fileID: 5117670906451443074}
+  - component: {fileID: 8378726459986819307}
   m_Layer: 6
   m_Name: Bomb
   m_TagString: Untagged
@@ -197,7 +197,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3908782135862756646}
   m_Father: {fileID: 0}
@@ -218,23 +218,70 @@ MonoBehaviour:
   _firePrefab: {fileID: 1937029912910424216, guid: 2266095d910e3e24990956d0e18f8486, type: 3}
   _destroyedMask:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 448
   _charactersMask:
     serializedVersion: 2
     m_Bits: 128
---- !u!135 &-8004142621645287975
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2985629492789990776}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.45
-  m_Center: {x: 0, y: 0.5, z: 0}
+  _sizeAnimation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.009000494
+      outSlope: -0.009000494
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.08407767
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.5
+      inSlope: 0.0017800331
+      outSlope: 0.0017800331
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _colorAnimation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.8
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _bombMaterial:
+  - {fileID: 2273073609049437573}
+  - {fileID: 4119843710970218305}
 --- !u!54 &5117670906451443074
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -251,6 +298,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!65 &8378726459986819307
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2985629492789990776}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!1 &4919111969109332117
 GameObject:
   m_ObjectHideFlags: 0

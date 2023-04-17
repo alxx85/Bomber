@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 696765514787434480}
   - component: {fileID: 1425640882735645062}
   m_Layer: 0
-  m_Name: Stone
+  m_Name: Cobble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

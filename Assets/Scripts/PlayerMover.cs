@@ -86,6 +86,9 @@ public class PlayerMover : MonoBehaviour
 
     private void Move()
     {
+        if (transform.position.y != 0)
+            _moveDirection.y = transform.position.y * -1;
+
         _controller.Move(_moveDirection * _speed * Time.deltaTime);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_rotateDirection), _rotateSpeed);
