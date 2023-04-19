@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f22e2e125690b47a7984808122006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _delay: 0.5
+  _delay: 1
   _fireAnimation:
     serializedVersion: 2
     m_Curve:
@@ -59,17 +59,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.51060337
     - serializedVersion: 3
-      time: 0.25005704
-      value: 0.9998422
-      inSlope: -0.59062576
-      outSlope: -0.59062576
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
       time: 0.50004214
-      value: -0.0002644062
+      value: 1
       inSlope: -0.0058528427
       outSlope: -0.0058528427
       tangentMode: 0
@@ -79,6 +70,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _renderer: {fileID: 7199524043863169313}
 --- !u!1 &6434361731521848819
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +133,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9a526ccb9696d6545b3991e93bfb18bd, type: 2}
+  - {fileID: 2100000, guid: 3b7d37a68e7033f418b9bc3375ef6fea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
