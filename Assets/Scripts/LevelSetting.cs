@@ -16,8 +16,8 @@ public class LevelSetting : ScriptableObject
     public int Width => _width;
     public int Height => _height;
     public int BrickBlockAmount => _brickBlockAmount;
-    public GameObject BrickBlock => BrickBlock;
-    public GameObject StoneBlock => StoneBlock;
+    public GameObject BrickBlock => _brickBlock;
+    public GameObject StoneBlock => _stoneBlock;
     public LevelBoost[] LevelBoost => _levelBoost;
     public List<LevelEnemy> Enemys => _enemys;
 }
