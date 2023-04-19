@@ -17,12 +17,12 @@ public class Fire : MonoBehaviour
 
     private void Update()
     {
-        Material material = _renderer.material;
         float scale = _fireAnimation.Evaluate(_currentTime);
         transform.localScale = Vector3.one * scale;
         _currentTime += Time.deltaTime;
-        _dissolve = Mathf.Lerp(_dissolve, 1f, _delay * Time.deltaTime);
-        //_dissolve = Mathf.Clamp(_dissolve, -1f, 1f);
+
+        Material material = _renderer.material;
+        _dissolve = Mathf.Lerp(_dissolve, 1f, Time.deltaTime);
         material.SetFloat("_DissolveSize", _dissolve);
     }
 }
