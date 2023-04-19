@@ -185,8 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveDirection: {x: 0, y: 0, z: 0}
-  _speed: 1
-  _stopMoveingDelay: 0.1
+  _speed: 1.3
+  _stopMoveingDelay: 0.3
   _blockedMask:
     serializedVersion: 2
     m_Bits: 65

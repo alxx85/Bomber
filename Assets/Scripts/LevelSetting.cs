@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class LevelSetting
+[CreateAssetMenu(fileName ="Level", menuName ="Levels/AddLevel", order = 50)]
+public class LevelSetting : ScriptableObject
 {
-    public LevelBoost[] LevelBoost;
+    [SerializeField] private int _width;
+    [SerializeField] private int _height;
+    [SerializeField] private int _brickBlockAmount;
+    [SerializeField] private GameObject _brickBlock;
+    [SerializeField] private GameObject _stoneBlock;
+    [SerializeField] private LevelBoost[] _levelBoost;
+    [SerializeField] private List<LevelEnemy> _enemys;
 
-    public int Level;// { get; private set; }
-    public int Width;// { get; private set; }
-    public int Height;// { get; private set; }
-    public int BrickBlockAmount;// { get; private set; }
-    public GameObject BrickBlock;
-    public GameObject StoneBlock;
-    public List<LevelEnemy> Enemys;// { get; private set; }
+    public int Width => _width;
+    public int Height => _height;
+    public int BrickBlockAmount => _brickBlockAmount;
+    public GameObject BrickBlock => BrickBlock;
+    public GameObject StoneBlock => StoneBlock;
+    public LevelBoost[] LevelBoost => _levelBoost;
+    public List<LevelEnemy> Enemys => _enemys;
 }
 
 public class Boost

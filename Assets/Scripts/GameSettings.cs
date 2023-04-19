@@ -12,11 +12,11 @@ public class GameSettings : MonoBehaviour
     private const float BoostSpeedRate = .5f;
 
     [Header("Level")]
-//    [SerializeField] private int _levelNumber;
-    [SerializeField] private GameLevels _levels;
-    [SerializeField] private WorldGenerator _world;
+    //[SerializeField] private GameLevels _levels;
+    //[SerializeField] private WorldGenerator _world;
     [Header("Player")]
     [SerializeField] private PlayerMover _player;
+    [SerializeField] private PlayerMover _playerTemplate;
     [SerializeField] private Bomb _templateBomb;
     [SerializeField] private int _currentLevel = 0;
     [SerializeField] private int _lifes;
@@ -40,8 +40,8 @@ public class GameSettings : MonoBehaviour
 
     private List<Character> _levelEnemys = new List<Character>();
     private List<Bomb> _bombPool = new List<Bomb>();
-    //private List<LevelSetting> _levels = new List<LevelSetting>();
-    private LevelSetting _level;
+    private List<LevelSetting> _level = new List<LevelSetting>();
+    private Portal _portal;
 
     public int Lifes => _lifes;
     public float Speed => _speed;
@@ -49,35 +49,32 @@ public class GameSettings : MonoBehaviour
     public int Power => _bombPower;
     public bool CanKick => _canKickBomb;
     public bool UseShield => _useShield;
-    public int Width => _level.Width; //_levels[_currentLevel - 1].Width;
-    public int Height => _level.Height; //_levels[_currentLevel - 1].Height;
+    public int Width => _level[_currentLevel].Width;
+    public int Height => _level[_currentLevel].Height;
     public List<Bomb> BombPool => _bombPool;
+    public PlayerMover Player => _playerTemplate;
 
     public event Action ChangedPlayerProperties;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (GameSettings.Instance == null)
             Instance = this;
-        else if (Instance == this)
+        else
             Destroy(gameObject);
 
         DontDestroyOnLoad(this);
-        _level = _levels.GetLevelSetting(_currentLevel);
-        //_levels.Add(new LevelSetting(1, 15, 15, 1, 112, 2));
 
-        CreatBombPool();
-        _world.InitWorldSetting(this, _level);//_levels[_currentLevel - 1]);
-    }
-
-    private void OnEnable()
-    {
-        _player.PickUpBooster += OnPickup;
+        LoadLevels();
     }
 
     private void OnDisable()
     {
-        _player.PickUpBooster -= OnPickup;
+        if (_player != null)
+        {
+            _player.PickUpBooster -= OnPickup;
+            _player.GetComponent<Character>().Dying -= OnPlayerDying;
+        }
 
         foreach (var enemy in _levelEnemys)
         {
@@ -85,10 +82,47 @@ public class GameSettings : MonoBehaviour
         }
     }
 
+    public LevelSetting GetCurrentLevel()
+    {
+        LevelSetting level = _level[_currentLevel];
+        return level;
+    }
+
+    public void InitPlayer(PlayerMover player)
+    {
+        _player = player;
+        _player.PickUpBooster += OnPickup;
+        _player.GetComponent<Character>().Dying += OnPlayerDying;
+    }
+
+    public void InitLevelPortal(Portal portal)
+    {
+        _portal = portal;
+        _portal.ChangedLevel += OnChangedLevel;
+        CreatBombPool();
+    }
+
     public void AddEnemyOnList(Character enemy)
     {
         _levelEnemys.Add(enemy);
         enemy.Dying += OnEnemyDying;
+    }
+
+    private void OnChangedLevel(Portal portal)
+    {
+        portal.ChangedLevel -= OnChangedLevel;
+        _portal = null;
+        _currentLevel++;
+    }
+
+    private void LoadLevels()
+    {
+        var levels = Resources.LoadAll("Levels/", typeof(LevelSetting));
+
+        foreach (var item in levels)
+        {
+            _level.Add((LevelSetting)item);
+        }
     }
 
     private void CreatBombPool()
@@ -109,8 +143,13 @@ public class GameSettings : MonoBehaviour
 
         if (_levelEnemys.Count == 0)
         {
-            Debug.Log("Player Win");
+            _portal.Activate();
         }
+    }
+
+    private void OnPlayerDying(Character player)
+    {
+        _lifes--;
     }
 
     private void OnPickup(Boost booster)

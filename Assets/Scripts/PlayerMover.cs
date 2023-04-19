@@ -17,6 +17,7 @@ public class PlayerMover : MonoBehaviour
     private KeyCode _rightButton = KeyCode.RightArrow;
     private KeyCode _forwardButton = KeyCode.UpArrow;
     private KeyCode _backButton = KeyCode.DownArrow;
+    private Camera_Controller _camera;
 
     public Vector3 Direction => _rotateDirection;
 
@@ -24,18 +25,23 @@ public class PlayerMover : MonoBehaviour
 
     private void Awake()
     {
-        _setting = GameSettings.Instance;
         _controller = GetComponent<CharacterController>();
-    }
+        _camera = Camera.main.GetComponent<Camera_Controller>();
 
-    private void OnEnable()
+}
+
+private void OnEnable()
     {
+        _setting = GameSettings.Instance;
+        _setting.InitPlayer(this);
         _setting.ChangedPlayerProperties += InitPlayer;
+        _camera.InitPlayer(this);
     }
 
     private void OnDisable()
     {
-        _setting.ChangedPlayerProperties -= InitPlayer;
+        if (_setting != null)
+            _setting.ChangedPlayerProperties -= InitPlayer;
     }
 
     private void Start()

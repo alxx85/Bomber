@@ -205,11 +205,11 @@ public class Bomb : MonoBehaviour
 
     private Vector3Int ConvertPosition(Vector3 position) => new Vector3Int(Mathf.RoundToInt(position.x), 0, Mathf.RoundToInt(position.z));
 
-    private void OnGUI()
-    {
-        Vector3 position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up);
-        GUI.Label(new Rect(position.x, Screen.height - position.y, 50, 50),_timer.ToString());
-    }
+    //private void OnGUI()
+    //{
+    //    Vector3 position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up);
+    //    GUI.Label(new Rect(position.x, Screen.height - position.y, 50, 50),_timer.ToString());
+    //}
 
     private void ResetState()
     {

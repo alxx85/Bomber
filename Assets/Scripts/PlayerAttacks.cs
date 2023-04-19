@@ -14,7 +14,7 @@ public class PlayerAttacks : MonoBehaviour
     private List<Bomb> _installed = new List<Bomb>();
     private GameSettings _setting;
     private PlayerMover _mover;
-    private int _bombAmound;
+    [SerializeField]private int _bombAmound;
     private int _bombPower;
     private bool _canKick = false;
     private KeyCode _setBombButton = KeyCode.Space;
@@ -27,7 +27,10 @@ public class PlayerAttacks : MonoBehaviour
 
     private void OnDisable()
     {
-        _setting.ChangedPlayerProperties -= InitAttack;
+        _bombsPool.Clear();
+
+        if (_setting != null)
+            _setting.ChangedPlayerProperties -= InitAttack;
     }
 
     private void Start()
@@ -41,10 +44,17 @@ public class PlayerAttacks : MonoBehaviour
     {
         if(Input.GetKeyDown(_setBombButton))
         {
-            if (_bombsPool.Count > 0 && _bombAmound > 0)
+            if (_bombsPool.Count > 0)
             {
-                BombInstall();
-                _bombAmound--;
+                if (_bombAmound > 0)
+                {
+                    BombInstall();
+                    _bombAmound--;
+                }
+            }
+            else
+            {
+                InitAttack();
             }
         }
 
@@ -104,5 +114,4 @@ public class PlayerAttacks : MonoBehaviour
         currentPosition.z = Mathf.RoundToInt(currentPosition.z);
         return currentPosition;
     }
-
 }

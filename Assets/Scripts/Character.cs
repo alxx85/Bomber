@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
 
     private void OnDisable()
     {
-        if (_isPlayer)
+        if (_isPlayer && _setting != null)
             _setting.ChangedPlayerProperties -= InitPlayer;
     }
 
@@ -37,7 +37,10 @@ public class Character : MonoBehaviour
 
         if (_health <= 0)
         {
-            Destroy(gameObject);
+            if (this.GetComponent<PlayerMover>() == false)
+                Destroy(gameObject);
+            else
+                gameObject.SetActive(false);
             Dying?.Invoke(this);
         }
     }

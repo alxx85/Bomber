@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
+    private const int StartEnemyIndexes = 10;
+
     [SerializeField] private GameObject _cobbleBlock;
-    [SerializeField] private GameObject _stoneBlock;
-    [SerializeField] private GameObject _brickBlock;
     [SerializeField] private GameObject _floorBlock;
     [SerializeField] private BoostViewer _boostViewer;
     [SerializeField] private Transform _worldZeroPoint;
-    [SerializeField] private PlayerMover _player;
+    [SerializeField] private Portal _portal;
     [SerializeField] private List<LevelEnemy> _levelEnemys;
 
     private GameSettings _settings;
     private List<Vector3Int> _blockeds = new List<Vector3Int>();
     private List<Vector3Int> _clearBlocks = new List<Vector3Int>();
     private List<LevelBoost> _levelBoosters;
+    private GameObject _stoneBlock;
+    private GameObject _brickBlock;
     private int _xFieldSize;
     private int _zFieldSize;
     private int _brickBlockAmount;
@@ -24,9 +26,15 @@ public class WorldGenerator : MonoBehaviour
     private int[,] _world;
     private System.Random _random = new System.Random();
 
-    public void InitWorldSetting(GameSettings settings, LevelSetting levelSetting)
+    private void Start()
     {
-        _settings = settings;
+        _settings = GameSettings.Instance;
+        LevelSetting levelSetting = _settings.GetCurrentLevel();
+        InitLevelSetting(levelSetting);
+    }
+
+    public void InitLevelSetting(LevelSetting levelSetting)
+    {
         _xFieldSize = levelSetting.Width;
         _zFieldSize = levelSetting.Height;
         _brickBlockAmount = levelSetting.BrickBlockAmount;
@@ -93,7 +101,7 @@ public class WorldGenerator : MonoBehaviour
                 int position = _random.Next(_clearBlocks.Count());
                 Vector3Int SetPosition = _clearBlocks[position];
                 _clearBlocks.Remove(SetPosition);
-                _world[SetPosition.x, SetPosition.z] = 5 + j;
+                _world[SetPosition.x, SetPosition.z] = StartEnemyIndexes + j;
             }
         }
     }
@@ -119,6 +127,8 @@ public class WorldGenerator : MonoBehaviour
 
     private void CreateWorldPlace()
     {
+        _world[1, 1] = 5;
+
         for (int x = 0; x < _xFieldSize; x++)
         {
             for (int z = 0; z < _zFieldSize; z++)
@@ -164,9 +174,15 @@ public class WorldGenerator : MonoBehaviour
                     _levelBoosters.RemoveAt(index);
                 }
 
-                if (_world[x,z] >= 5)
+                if (_world[x, z] == 5)
                 {
-                    int index = _world[x, z] - 5;
+                    Instantiate(_portal, _worldZeroPoint.position + new Vector3(x, 0f, z), Quaternion.identity, _worldZeroPoint);
+                    _portal.Init();
+                }
+
+                if (_world[x,z] >= StartEnemyIndexes)
+                {
+                    int index = _world[x, z] - StartEnemyIndexes;
                     Character enemy = Instantiate(_levelEnemys[index].Enemy, _worldZeroPoint.position + new Vector3(x, 0f, z), Quaternion.identity);
                     _settings.AddEnemyOnList(enemy);
                 }
