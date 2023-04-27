@@ -4,16 +4,21 @@ using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour
 {
+    private const float MaxSpawnedDelay = -15;
+    private const float MinEnemyDistance = 2.5f;
+
     [SerializeField] private ParticleSystem[] _activateParticle;
     [SerializeField] private float _timeToSpawn;
+    [SerializeField] private LayerMask _enemyMask;
 
     private GameSettings _settings;
-    [SerializeField] private Character _player;
+    private Character _player;
     private bool _isActiv = false;
     private bool _canSpawn;
+    private bool _playerSpawned = false;
     private float _delay;
 
-    public event Action<Portal> ChangedLevel;
+    public event Action<Portal, bool> ChangedLevel;
 
     private void Start()
     {
@@ -34,7 +39,17 @@ public class Portal : MonoBehaviour
                 if (_settings.Lifes > 0)
                     SpawnPlayerWithDelay();
 
-                _canSpawn = false;
+                if (_playerSpawned)
+                {
+                    _canSpawn = false;
+                    _delay = 0;
+                }
+
+                if (_delay < MaxSpawnedDelay)
+                {
+                    ChangedLevel?.Invoke(this, false);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
             }
         }
     }
@@ -61,16 +76,21 @@ public class Portal : MonoBehaviour
 
     private void SpawnPlayerWithDelay()
     {
-        if (_player == null)
+        Collider[] enemy = Physics.OverlapSphere(transform.position, MinEnemyDistance, _enemyMask);
+        if (enemy.Length == 0)
         {
-            var player = Instantiate(_settings.Player.gameObject, transform.position, Quaternion.identity);
-            _player = player.GetComponent<Character>();
-            _player.Dying += OnPlayerDying;
-        }
-        else
-        {
-            _player.transform.position = transform.position;
-            _player.gameObject.SetActive(true);
+            if (_player == null)
+            {
+                var player = Instantiate(_settings.Player.gameObject, transform.position, Quaternion.identity);
+                _player = player.GetComponent<Character>();
+                _player.Dying += OnPlayerDying;
+            }
+            else
+            {
+                _player.transform.position = transform.position;
+                _player.gameObject.SetActive(true);
+            }
+            _playerSpawned = true;
         }
     }
 
@@ -78,16 +98,17 @@ public class Portal : MonoBehaviour
     {
         _delay = _timeToSpawn;
         _canSpawn = true;
+        _playerSpawned = false;
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (_isActiv)
         {
-            if (other.TryGetComponent(out PlayerMover player))
+            if (other.TryGetComponent(out PlayerMovement player))
             {
                 Debug.Log("Level Completed!");
-                ChangedLevel?.Invoke(this);
+                ChangedLevel?.Invoke(this, true);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }

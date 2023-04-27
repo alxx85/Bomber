@@ -11,12 +11,11 @@ public class GameSettings : MonoBehaviour
     private const int BoostZero = 0;
     private const float BoostSpeedRate = .5f;
 
-    [Header("Level")]
+    //[Header("Level")]
     //[SerializeField] private GameLevels _levels;
     //[SerializeField] private WorldGenerator _world;
     [Header("Player")]
-    [SerializeField] private PlayerMover _player;
-    [SerializeField] private PlayerMover _playerTemplate;
+    [SerializeField] private PlayerMovement _playerTemplate;
     [SerializeField] private Bomb _templateBomb;
     [SerializeField] private int _currentLevel = 0;
     [SerializeField] private int _lifes;
@@ -40,7 +39,8 @@ public class GameSettings : MonoBehaviour
 
     private List<Character> _levelEnemys = new List<Character>();
     private List<Bomb> _bombPool = new List<Bomb>();
-    private List<LevelSetting> _level = new List<LevelSetting>();
+    private List<LevelSetting> _levels = new List<LevelSetting>();
+    private Character _player;
     private Portal _portal;
 
     public int Lifes => _lifes;
@@ -49,10 +49,10 @@ public class GameSettings : MonoBehaviour
     public int Power => _bombPower;
     public bool CanKick => _canKickBomb;
     public bool UseShield => _useShield;
-    public int Width => _level[_currentLevel].Width;
-    public int Height => _level[_currentLevel].Height;
+    public int Width => _levels[_currentLevel].Width;
+    public int Height => _levels[_currentLevel].Height;
     public List<Bomb> BombPool => _bombPool;
-    public PlayerMover Player => _playerTemplate;
+    public PlayerMovement Player => _playerTemplate;
 
     public event Action ChangedPlayerProperties;
 
@@ -72,8 +72,7 @@ public class GameSettings : MonoBehaviour
     {
         if (_player != null)
         {
-            _player.PickUpBooster -= OnPickup;
-            _player.GetComponent<Character>().Dying -= OnPlayerDying;
+            _player.Dying -= OnPlayerDying;
         }
 
         foreach (var enemy in _levelEnemys)
@@ -84,15 +83,14 @@ public class GameSettings : MonoBehaviour
 
     public LevelSetting GetCurrentLevel()
     {
-        LevelSetting level = _level[_currentLevel];
+        LevelSetting level = _levels[_currentLevel];
         return level;
     }
 
-    public void InitPlayer(PlayerMover player)
+    public void InitPlayer(Character player)
     {
         _player = player;
-        _player.PickUpBooster += OnPickup;
-        _player.GetComponent<Character>().Dying += OnPlayerDying;
+        _player.Dying += OnPlayerDying;
     }
 
     public void InitLevelPortal(Portal portal)
@@ -108,11 +106,18 @@ public class GameSettings : MonoBehaviour
         enemy.Dying += OnEnemyDying;
     }
 
-    private void OnChangedLevel(Portal portal)
+    public void PickupBooster(Boost boost)
+    {
+        ChangePlayerProperties(boost);
+    }
+
+    private void OnChangedLevel(Portal portal, bool nextLevel)
     {
         portal.ChangedLevel -= OnChangedLevel;
         _portal = null;
-        _currentLevel++;
+
+        if (nextLevel && _currentLevel < _levels.Count)
+            _currentLevel++;
     }
 
     private void LoadLevels()
@@ -121,12 +126,14 @@ public class GameSettings : MonoBehaviour
 
         foreach (var item in levels)
         {
-            _level.Add((LevelSetting)item);
+            _levels.Add((LevelSetting)item);
         }
     }
 
     private void CreatBombPool()
     {
+        _bombPool.Clear();
+
         for (int i = 0; i < _maxBombAmount; i++)
         {
             Bomb bomb = Instantiate(_templateBomb, Vector3.zero, Quaternion.identity);
@@ -149,10 +156,10 @@ public class GameSettings : MonoBehaviour
 
     private void OnPlayerDying(Character player)
     {
-        _lifes--;
+        _lifes -= 1;
     }
 
-    private void OnPickup(Boost booster)
+    private void ChangePlayerProperties(Boost booster)
     {
         _lifes += booster.Life ? BoostAmount : BoostZero;
         
@@ -171,7 +178,6 @@ public class GameSettings : MonoBehaviour
         if (_useShield == false)
             _useShield = booster.Shield;
 
-        Debug.Log("Pickup");
         ChangedPlayerProperties?.Invoke();
     }
 }

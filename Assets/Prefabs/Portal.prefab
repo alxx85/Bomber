@@ -50,6 +50,10 @@ MonoBehaviour:
   - {fileID: 5737085528800437770}
   - {fileID: 6673750390756549263}
   _timeToSpawn: 2
+  _enemyMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _player: {fileID: 0}
 --- !u!65 &5187402395769576031
 BoxCollider:
   m_ObjectHideFlags: 0

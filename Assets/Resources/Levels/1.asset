@@ -15,8 +15,8 @@ MonoBehaviour:
   _width: 19
   _height: 19
   _brickBlockAmount: 55
-  _brickBlock: {fileID: 5741445534625150933, guid: cd8b4db18a74cab4b9229ad5c316d94d, type: 3}
-  _stoneBlock: {fileID: 5741445534625150933, guid: e5a58d2393c0c6e4a9968f14ce0d8a38, type: 3}
+  _brickBlock: {fileID: 9043963814740808136, guid: 77a321c6b84bab94e9690436cece34b1, type: 3}
+  _stoneBlock: {fileID: 1163818295347400644, guid: fa0d38719a75ad44c8655b9097a3826e, type: 3}
   _levelBoost:
   - Booster: {fileID: 11400000, guid: 47388658118e2094c84df7e5f3a73177, type: 2}
     Amount: 1

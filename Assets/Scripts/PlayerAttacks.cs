@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerAttacks : MonoBehaviour
 {
-    private const string Jump = "Jump";
-    private const string Force = "Force";
+    //private const string Jump = "Jump";
+    //private const string Force = "Force";
 
     [SerializeField] private int _bombDelay;
     [SerializeField] private LayerMask _destroyedMask;
@@ -13,7 +13,7 @@ public class PlayerAttacks : MonoBehaviour
     private List<Bomb> _bombsPool = new List<Bomb>();
     private List<Bomb> _installed = new List<Bomb>();
     private GameSettings _setting;
-    private PlayerMover _mover;
+    private PlayerMovement _mover;
     [SerializeField]private int _bombAmound;
     private int _bombPower;
     private bool _canKick = false;
@@ -22,7 +22,7 @@ public class PlayerAttacks : MonoBehaviour
 
     private void Awake()
     {
-        _mover = GetComponent<PlayerMover>();
+        _mover = GetComponent<PlayerMovement>();
     }
 
     private void OnDisable()
@@ -63,7 +63,7 @@ public class PlayerAttacks : MonoBehaviour
             Vector3 direction = _mover.Direction;
             Vector3 bombPosition = GetRoundPosition() + direction;
             Debug.Log("Force");
-            Collider[] hit = Physics.OverlapSphere(bombPosition, 0.45f, _destroyedMask);
+            Collider[] hit = Physics.OverlapSphere(bombPosition, 0.55f, _destroyedMask);
             
             if (hit.Length > 0)
             {

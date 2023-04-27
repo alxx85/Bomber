@@ -22,6 +22,7 @@ public class Bomb : MonoBehaviour
     private Coroutine _startDelay;
     private Coroutine _collision;
     private Rigidbody _body;
+    private Vector3 _moveDirection;
     private int _timer;
     private int _power;
     private bool _isActivated = false;
@@ -51,6 +52,9 @@ public class Bomb : MonoBehaviour
 
         for (int i = 0; i < _bombMaterial.Length; i++)
             _bombMaterial[i].material.color = new Color(_colorAnimation.Evaluate(_currentColorTime), 0, 0);
+
+        if (_body.velocity.magnitude <= 0.25f)
+            _moveDirection = Vector3.zero;
     }
 
     public void Init(int TimeToActivate, int power, PlayerAttacks character)
@@ -77,7 +81,8 @@ public class Bomb : MonoBehaviour
 
     public void Move(Vector3 direction)
     {
-        _body.velocity = direction * 5;
+         _moveDirection = direction * 5;
+        _body.velocity = _moveDirection;
     }
 
     private IEnumerator GetCollision()
@@ -172,14 +177,12 @@ public class Bomb : MonoBehaviour
                 if (item.TryGetComponent(out Destroying destroy))
                 {
                     _destroying.Add(destroy);
-                    Debug.Log(destroy);
                     return false;
                 }
                 else if (item.TryGetComponent(out Bomb nextBomb))
                 {
                     if (nextBomb != this)
                     {
-                        Debug.Log(item.gameObject.name + " true " + Time.time);
                         nextBomb.Init(0, _power, null);
                         return false;
                     }
@@ -189,9 +192,12 @@ public class Bomb : MonoBehaviour
                     if (!_damaging.Contains(character))
                     {
                         _damaging.Add(character);
-                        Debug.Log(character.name);
                     }
                     return true;
+                }
+                else if (item.TryGetComponent(out BoostViewer boost))
+                {
+                    boost.TakeDamage();
                 }
             }
         }
@@ -220,6 +226,6 @@ public class Bomb : MonoBehaviour
         _destroying.Clear();
         _damaging.Clear();
         _collider.isTrigger = true;
-        _body.velocity = Vector3.zero;
+        _moveDirection = Vector3.zero;
     }
 }

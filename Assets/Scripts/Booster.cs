@@ -14,5 +14,5 @@ public class Booster : ScriptableObject
 
     public Sprite Sprite => _sprite;
     public Color BackgroundColor => _color;
-    public Boost AddBoost => new Boost(_life, _speed, _addBombAmount, _addBombPower, _kick, _shield);
+    public Boost GetBoost => new Boost(_life, _speed, _addBombAmount, _addBombPower, _kick, _shield);
 }

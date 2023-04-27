@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44164744, g: 0.49053532, b: 0.57053024, a: 1}
+  m_IndirectSpecularColor: {r: 0.44885993, g: 0.49892598, b: 0.5756986, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -155,6 +155,8 @@ MonoBehaviour:
   _levels:
   - {fileID: 11400000, guid: 0fa0d54fc66cc7d4e983f66f22caa09f, type: 2}
   - {fileID: 11400000, guid: 2d36d4bff669fdb4d950d9306709027a, type: 2}
+  - {fileID: 11400000, guid: dd871f8d97784b0458f668bdfa03ea67, type: 2}
+  - {fileID: 11400000, guid: f0d03e452e1e09448b13a1a66a6c0eb7, type: 2}
 --- !u!4 &11590442
 Transform:
   m_ObjectHideFlags: 0
@@ -256,14 +258,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 181188993}
-  m_LocalRotation: {x: 0.5294752, y: 0, z: 0, w: 0.84832543}
+  m_LocalRotation: {x: 0.36650118, y: 0, z: 0, w: 0.9304176}
   m_LocalPosition: {x: -3.95, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 63.94, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 43, y: 0, z: 0}
 --- !u!1 &234330256
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b821170ce7a0e4d47815c0d7331675ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cobbleBlock: {fileID: 5741445534625150933, guid: e5a58d2393c0c6e4a9968f14ce0d8a38, type: 3}
+  _cobbleBlock: {fileID: 1653985451179410178, guid: 0b7d3084ac95e2d4f80d3cd29acdc4af, type: 3}
   _floorBlock: {fileID: 2765255892716901825, guid: 7f032a6ca7661bb468a0ab1ac04ac87b, type: 3}
   _boostViewer: {fileID: 1272824453941612414, guid: ab3b29daf74547947ba5cc9f8ea17550, type: 3}
   _worldZeroPoint: {fileID: 2051408633}
@@ -344,17 +346,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d267e9062b58f0c4583691d56a01be65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levels: {fileID: 11590441}
-  _world: {fileID: 234330257}
-  _player: {fileID: 0}
-  _playerTemplate: {fileID: 7929205472317556043, guid: 360f947d2f0b39c4fa3082a4e81ecd41, type: 3}
+  _playerTemplate: {fileID: 8612400999339722559, guid: 0378259ce54b39a4fb5fb0e5b45b938a, type: 3}
   _templateBomb: {fileID: -9003730968104527896, guid: 9fd43a50e34104845a83dac09fd16569, type: 3}
   _currentLevel: 0
-  _lifes: 2
-  _speed: 2
-  _bombAmount: 1
+  _lifes: 4
+  _speed: 3
+  _bombAmount: 2
   _bombPower: 2
-  _canKickBomb: 0
+  _canKickBomb: 1
   _useShield: 0
   _maxSpeed: 6
   _maxBombAmount: 8
@@ -365,7 +364,6 @@ MonoBehaviour:
   BackKey: 115
   SetBombKey: 32
   KickBombKey: 101
-  _bombPool: []
 --- !u!4 &1286121491
 Transform:
   m_ObjectHideFlags: 0

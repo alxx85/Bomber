@@ -2,7 +2,7 @@
 
 public class Camera_Controller : MonoBehaviour
 {
-    [SerializeField] private PlayerMover _player;
+    [SerializeField] private PlayerMovement _player;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Vector3 distance;
 
@@ -21,7 +21,7 @@ public class Camera_Controller : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, distance, _moveSpeed * Time.deltaTime);
     }
 
-    public void InitPlayer(PlayerMover player)
+    public void InitPlayer(PlayerMovement player)
     {
         _player = player;
         _isTracking = true;
