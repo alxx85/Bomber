@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTemplate: {fileID: 8612400999339722559, guid: 0378259ce54b39a4fb5fb0e5b45b938a, type: 3}
-  _templateBomb: {fileID: -9003730968104527896, guid: 9fd43a50e34104845a83dac09fd16569, type: 3}
+  _templateBomb: {fileID: 11430220, guid: b199b47907c182c4798a89268f9937cf, type: 3}
   _currentLevel: 0
   _lifes: 4
   _speed: 3
@@ -355,6 +355,7 @@ MonoBehaviour:
   _bombPower: 2
   _canKickBomb: 1
   _useShield: 0
+  _explodeDelay: 3
   _maxSpeed: 6
   _maxBombAmount: 8
   _maxBombPower: 10

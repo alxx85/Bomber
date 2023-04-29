@@ -21,7 +21,7 @@ MonoBehaviour:
   - Booster: {fileID: 11400000, guid: 47388658118e2094c84df7e5f3a73177, type: 2}
     Amount: 1
   _enemys:
-  - Enemy: {fileID: 1263824757994787787, guid: 69d871c6896aa294e89a15b891b4ee9d, type: 3}
+  - Enemy: {fileID: 1263824757994787787, guid: 7c9d891fb61f2ad4f9ed56b63e74b2da, type: 3}
     Amount: 2
-  - Enemy: {fileID: 2936364075996679961, guid: 7a0377be455c31047b2623c11312d1d4, type: 3}
+  - Enemy: {fileID: 4076125306654548178, guid: 0919bca513fb96e4e88f424bc99f18fb, type: 3}
     Amount: 2

@@ -8,7 +8,12 @@ public class PlayerInput : Inputs
     private KeyCode _rightButton = KeyCode.RightArrow;
     private KeyCode _forwardButton = KeyCode.UpArrow;
     private KeyCode _backButton = KeyCode.DownArrow;
+    private KeyCode _setBombButton = KeyCode.Space;
+    private KeyCode _kickBombButton = KeyCode.E;
     private Vector3 _direction = Vector3.zero;
+
+    public event Action SetedBomb;
+    public event Action KickedBomb;
 
     private void Start()
     {
@@ -26,6 +31,15 @@ public class PlayerInput : Inputs
 
     private void Update()
     {
+        if (Input.GetKeyDown(_setBombButton))
+        {
+            SetedBomb?.Invoke();
+        }
+        
+        if (Input.GetKeyDown(_kickBombButton))
+        {
+            KickedBomb?.Invoke();
+        }
 
         if (Input.GetKey(_leftButton))
             _direction = Vector3.left;

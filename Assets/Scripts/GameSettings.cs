@@ -24,6 +24,8 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private int _bombPower;
     [SerializeField] private bool _canKickBomb;
     [SerializeField] private bool _useShield;
+    [Header("Bomb Properties")]
+    [SerializeField] private float _explodeDelay = 3f;
     [Header("Limit Properties")]
     [SerializeField] private int _maxSpeed = 6;
     [SerializeField] private int _maxBombAmount = 8; 
@@ -38,7 +40,6 @@ public class GameSettings : MonoBehaviour
     public KeyCode KickBombKey;
 
     private List<Character> _levelEnemys = new List<Character>();
-    private List<Bomb> _bombPool = new List<Bomb>();
     private List<LevelSetting> _levels = new List<LevelSetting>();
     private Character _player;
     private Portal _portal;
@@ -51,7 +52,7 @@ public class GameSettings : MonoBehaviour
     public bool UseShield => _useShield;
     public int Width => _levels[_currentLevel].Width;
     public int Height => _levels[_currentLevel].Height;
-    public List<Bomb> BombPool => _bombPool;
+    public float ActivateDelay => _explodeDelay;
     public PlayerMovement Player => _playerTemplate;
 
     public event Action ChangedPlayerProperties;
@@ -97,7 +98,6 @@ public class GameSettings : MonoBehaviour
     {
         _portal = portal;
         _portal.ChangedLevel += OnChangedLevel;
-        CreatBombPool();
     }
 
     public void AddEnemyOnList(Character enemy)
@@ -127,18 +127,6 @@ public class GameSettings : MonoBehaviour
         foreach (var item in levels)
         {
             _levels.Add((LevelSetting)item);
-        }
-    }
-
-    private void CreatBombPool()
-    {
-        _bombPool.Clear();
-
-        for (int i = 0; i < _maxBombAmount; i++)
-        {
-            Bomb bomb = Instantiate(_templateBomb, Vector3.zero, Quaternion.identity);
-            bomb.gameObject.SetActive(false);
-            _bombPool.Add(bomb);
         }
     }
 

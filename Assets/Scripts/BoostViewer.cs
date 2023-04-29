@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BoostViewer : MonoBehaviour
+public class BoostViewer : MonoBehaviour, IDamageable
 {
     [SerializeField] private Booster _booster;
     [SerializeField] private SpriteRenderer _renderer;

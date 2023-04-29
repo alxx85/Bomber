@@ -134,10 +134,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bombDelay: 3
+  _template: {fileID: 11430220, guid: b199b47907c182c4798a89268f9937cf, type: 3}
   _destroyedMask:
     serializedVersion: 2
     m_Bits: 64
-  _bombAmound: 0
 --- !u!114 &9120324796785550888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d6de0a2f01a7de4cbca233a762e02b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveDirection: {x: 0, y: 0, z: 0}
   _input: {fileID: 6915008512790089217}
 --- !u!114 &6915008512790089217
 MonoBehaviour:

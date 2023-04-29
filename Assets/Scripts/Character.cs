@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IDamageable
 {
     [SerializeField] private int _health;
     [SerializeField] private bool _isPlayer;
@@ -15,8 +15,8 @@ public class Character : MonoBehaviour
 
     private void OnDisable()
     {
-        if (_isPlayer && _setting != null)
-            _setting.ChangedPlayerProperties -= InitPlayer;
+        //if (_isPlayer && _setting != null)
+        //    _setting.ChangedPlayerProperties -= InitPlayer;
 
         if (_isBoss)
         {
@@ -28,12 +28,13 @@ public class Character : MonoBehaviour
     {
         _setting = GameSettings.Instance;
 
-        if (_isPlayer)
-        {
-            _setting.ChangedPlayerProperties += InitPlayer;
-            InitPlayer();
-        }
-        else if (_isBoss)
+        //if (_isPlayer)
+        //{
+        //    _setting.ChangedPlayerProperties += InitPlayer;
+        //    InitPlayer();
+        //}
+        //else 
+        if (_isBoss)
         {
             _bossMover = GetComponent<EnemyBossMover>();
             _bossMover.UsedShield += OnUsedShield;
@@ -42,7 +43,7 @@ public class Character : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (_useShield)
+        if (_setting.UseShield)
         {
             if (_isPlayer)
                 _useShield = false;
@@ -66,10 +67,5 @@ public class Character : MonoBehaviour
     private void OnUsedShield(bool activate)
     {
         _useShield = activate;
-    }
-
-    private void InitPlayer()
-    {
-        _useShield = _setting.UseShield;
     }
 }
