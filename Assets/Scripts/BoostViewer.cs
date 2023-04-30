@@ -23,9 +23,9 @@ public class BoostViewer : MonoBehaviour, IDamageable
         _renderer.color = _booster.BackgroundColor;
     }
 
-    public void TakeDamage()
+    public void TakeDamage(AttackType attackedOf)
     {
-        if (_isActive == true)
+        if (_isActive == true && attackedOf == AttackType.Bomb)
             Destroy(gameObject);
         else
             _isActive = true;

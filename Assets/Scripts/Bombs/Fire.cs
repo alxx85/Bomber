@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Fire : MonoBehaviour
@@ -15,7 +13,7 @@ public class Fire : MonoBehaviour
     {
         if (other.TryGetComponent(out IDamageable damageable))
         {
-            damageable.TakeDamage();
+            damageable.TakeDamage(AttackType.Bomb);
         }
     }
 }

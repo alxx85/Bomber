@@ -353,7 +353,7 @@ MonoBehaviour:
   _speed: 3
   _bombAmount: 2
   _bombPower: 2
-  _canKickBomb: 1
+  _canKickBomb: 0
   _useShield: 0
   _explodeDelay: 3
   _maxSpeed: 6

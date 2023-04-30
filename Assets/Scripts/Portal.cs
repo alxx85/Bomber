@@ -12,7 +12,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private LayerMask _enemyMask;
 
     private GameSettings _settings;
-    private Character _player;
+    private Characters _player;
     private bool _isActiv = false;
     private bool _canSpawn;
     private bool _playerSpawned = false;
@@ -57,7 +57,7 @@ public class Portal : MonoBehaviour
     private void OnDisable()
     {
         if (_player != null)
-            _player.GetComponent<Character>().Dying -= OnPlayerDying;
+            _player.GetComponent<Characters>().Dying -= OnPlayerDying;
     }
 
     public void Init()//PlayerMover player)
@@ -82,7 +82,7 @@ public class Portal : MonoBehaviour
             if (_player == null)
             {
                 var player = Instantiate(_settings.Player.gameObject, transform.position, Quaternion.identity);
-                _player = player.GetComponent<Character>();
+                _player = player.GetComponent<Characters>();
                 _player.Dying += OnPlayerDying;
             }
             else
@@ -94,7 +94,7 @@ public class Portal : MonoBehaviour
         }
     }
 
-    private void OnPlayerDying(Character player)
+    private void OnPlayerDying(Characters player)
     {
         _delay = _timeToSpawn;
         _canSpawn = true;

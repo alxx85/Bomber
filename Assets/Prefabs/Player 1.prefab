@@ -147,12 +147,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7929205472317556046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b3d88e49f85c4142bff58bb4052bbaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b06b1f8dc6534846b728291eee2f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 2
-  _isPlayer: 1
-  _isBoss: 0
+  _health: 1
+  _takeDamageCooldown: 1
 --- !u!54 &-4878516302307948892
 Rigidbody:
   m_ObjectHideFlags: 0

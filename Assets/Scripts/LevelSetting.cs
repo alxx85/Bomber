@@ -52,6 +52,6 @@ public class LevelBoost
 [Serializable]
 public class LevelEnemy
 {
-    public Character Enemy;
+    public Characters Enemy;
     public int Amount;
 }

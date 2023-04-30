@@ -9,9 +9,9 @@ public class EnemyMovement : Movement
     [SerializeField] private float _stopMoveingDelay = .1f;
     [SerializeField] private bool _canChangingDirection;
 
-    private float _blockedSearchDelay = .5f;
+    private float _blockedSearchDelay = 1f;
     private float _currentDelay;
-    private bool _isBlocked;
+    //private bool _isBlocked;
     private Vector3 oldPosition;
     private bool _changingDirection;
 
@@ -79,7 +79,7 @@ public class EnemyMovement : Movement
         if (collision.collider.TryGetComponent(out PlayerAttacks player))
         {
             Debug.Log("Attack");
-            player.GetComponent<Character>().TakeDamage();
+            player.GetComponent<Characters>().TakeDamage(AttackType.Enemy);
         }
     }
 }

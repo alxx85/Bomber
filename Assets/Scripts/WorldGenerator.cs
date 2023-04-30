@@ -183,7 +183,7 @@ public class WorldGenerator : MonoBehaviour
                 if (_world[x,z] >= StartEnemyIndexes)
                 {
                     int index = _world[x, z] - StartEnemyIndexes;
-                    Character enemy = Instantiate(_levelEnemys[index].Enemy, _worldZeroPoint.position + new Vector3(x, 0f, z), Quaternion.identity);
+                    Characters enemy = Instantiate(_levelEnemys[index].Enemy, _worldZeroPoint.position + new Vector3(x, 0f, z), Quaternion.identity);
                     _settings.AddEnemyOnList(enemy);
                 }
             }

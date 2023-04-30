@@ -143,7 +143,7 @@ public class EnemyBossMover : MonoBehaviour
         if (hit.collider.TryGetComponent(out PlayerAttacks player))
         {
             Debug.Log("Attack");
-            player.GetComponent<Character>().TakeDamage();
+            //player.GetComponent<Character>().TakeDamage();
         }
 
         _moveDirection = Vector3.zero;

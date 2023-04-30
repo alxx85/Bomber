@@ -39,9 +39,9 @@ public class GameSettings : MonoBehaviour
     public KeyCode SetBombKey;
     public KeyCode KickBombKey;
 
-    private List<Character> _levelEnemys = new List<Character>();
+    private List<Characters> _levelEnemys = new List<Characters>();
     private List<LevelSetting> _levels = new List<LevelSetting>();
-    private Character _player;
+    private Characters _player;
     private Portal _portal;
 
     public int Lifes => _lifes;
@@ -88,7 +88,7 @@ public class GameSettings : MonoBehaviour
         return level;
     }
 
-    public void InitPlayer(Character player)
+    public void InitPlayer(Characters player)
     {
         _player = player;
         _player.Dying += OnPlayerDying;
@@ -100,7 +100,7 @@ public class GameSettings : MonoBehaviour
         _portal.ChangedLevel += OnChangedLevel;
     }
 
-    public void AddEnemyOnList(Character enemy)
+    public void AddEnemyOnList(Characters enemy)
     {
         _levelEnemys.Add(enemy);
         enemy.Dying += OnEnemyDying;
@@ -130,7 +130,7 @@ public class GameSettings : MonoBehaviour
         }
     }
 
-    private void OnEnemyDying(Character enemy)
+    private void OnEnemyDying(Characters enemy)
     {
         enemy.Dying -= OnEnemyDying;
         _levelEnemys.Remove(enemy);
@@ -142,7 +142,7 @@ public class GameSettings : MonoBehaviour
         }
     }
 
-    private void OnPlayerDying(Character player)
+    private void OnPlayerDying(Characters player)
     {
         _lifes -= 1;
     }
