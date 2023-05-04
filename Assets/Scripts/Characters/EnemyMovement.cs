@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMovement : Movement
@@ -9,15 +7,16 @@ public class EnemyMovement : Movement
     [SerializeField] private float _stopMoveingDelay = .1f;
     [SerializeField] private bool _canChangingDirection;
 
-    private float _blockedSearchDelay = 1f;
+    private float _blockedSearchDelay = .5f;
+    private float _unblockedDelay = .8f;
     private float _currentDelay;
-    //private bool _isBlocked;
+    private bool _isBlocked = true;
     private Vector3 oldPosition;
     private bool _changingDirection;
 
     private void Start()
     {
-        _currentDelay = 0;
+        _currentDelay = _blockedSearchDelay;
         _moveDirection = _input.GetDirection();
     }
 
@@ -28,17 +27,23 @@ public class EnemyMovement : Movement
         if (_moveDirection != Vector3.zero)
         {
             Moveing(_speed);
-            _currentDelay = 0;
+            _currentDelay = _stopMoveingDelay;
         }
         else
         {
-            _currentDelay += Time.deltaTime;
+            _currentDelay -= Time.deltaTime;
 
-            if (_currentDelay >= _blockedSearchDelay)
+            if (_currentDelay <= 0 && _isBlocked)
             {
-                _moveDirection = _input.GetDirection();
+                Vector3 clearDirection = _input.GetDirection();
+
+                if (clearDirection != Vector3.zero)
+                {
+                    _currentDelay = _unblockedDelay;
+                    _isBlocked = false;
+                }
             }
-            else if (_currentDelay >= _stopMoveingDelay)
+            else if (_currentDelay <= 0)
             {
                 _moveDirection = _input.GetDirection();
             }
@@ -46,27 +51,33 @@ public class EnemyMovement : Movement
 
         if (_canChangingDirection)
         {
-            if (oldPosition != _input.GetRoundPosition(_rbody.position))
-            {
-                _changingDirection = false;
-                oldPosition = _input.GetRoundPosition(_rbody.position);
-            }
+            ChangingDirection();
+        }
+    }
 
-            if (_changingDirection == false)
-            {
-                Vector3 approximatePosition = _input.GetApproximatePosition(_rbody.position);
-                float approximate = .5f - CurrentRadius;
+    private void ChangingDirection()
+    {
+        if (oldPosition != _input.GetRoundPosition(_rbody.position))
+        {
+            _changingDirection = false;
+            oldPosition = _input.GetRoundPosition(_rbody.position);
+        }
 
-                if (Mathf.Abs(approximatePosition.x) < approximate && Mathf.Abs(approximatePosition.z) < approximate)
+        if (_changingDirection == false)
+        {
+            Vector3 approximatePosition = _input.GetApproximatePosition(_rbody.position);
+            float approximate = .5f - CurrentRadius;
+
+            if (Mathf.Abs(approximatePosition.x) < approximate && Mathf.Abs(approximatePosition.z) < approximate)
+            {
+                if (_input.GetRoundPosition(_rbody.position).x % 2 == 0 && _input.GetRoundPosition(_rbody.position).z % 2 == 0)
                 {
-                    if (_input.GetRoundPosition(_rbody.position).x % 2 == 0 && _input.GetRoundPosition(_rbody.position).z % 2 == 0)
-                    {
-                        //_moveDirection = Vector3.zero;
-                        _changingDirection = true;
-                    }
+                    //_moveDirection = Vector3.zero;
+                    _changingDirection = true;
                 }
             }
         }
+
     }
 
     private void OnCollisionEnter(Collision collision)

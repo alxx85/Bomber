@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -116,7 +115,7 @@ public class GameSettings : MonoBehaviour
         portal.ChangedLevel -= OnChangedLevel;
         _portal = null;
 
-        if (nextLevel && _currentLevel < _levels.Count)
+        if (nextLevel && _currentLevel < _levels.Count - 1)
             _currentLevel++;
     }
 
@@ -144,7 +143,7 @@ public class GameSettings : MonoBehaviour
 
     private void OnPlayerDying(Characters player)
     {
-        _lifes -= 1;
+        _lifes--;
     }
 
     private void ChangePlayerProperties(Boost booster)

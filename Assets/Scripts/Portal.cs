@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour
 {
-    private const float MaxSpawnedDelay = -15;
+    private const float MaxSpawnedDelay = -25;
     private const float MinEnemyDistance = 2.5f;
 
     [SerializeField] private ParticleSystem[] _activateParticle;
@@ -60,7 +60,7 @@ public class Portal : MonoBehaviour
             _player.GetComponent<Characters>().Dying -= OnPlayerDying;
     }
 
-    public void Init()//PlayerMover player)
+    public void Init()
     {
         _delay = _timeToSpawn;
         _canSpawn = true;
@@ -77,6 +77,7 @@ public class Portal : MonoBehaviour
     private void SpawnPlayerWithDelay()
     {
         Collider[] enemy = Physics.OverlapSphere(transform.position, MinEnemyDistance, _enemyMask);
+        
         if (enemy.Length == 0)
         {
             if (_player == null)
@@ -84,11 +85,15 @@ public class Portal : MonoBehaviour
                 var player = Instantiate(_settings.Player.gameObject, transform.position, Quaternion.identity);
                 _player = player.GetComponent<Characters>();
                 _player.Dying += OnPlayerDying;
+                _settings.InitPlayer(_player);
             }
             else
             {
-                _player.transform.position = transform.position;
-                _player.gameObject.SetActive(true);
+                if (_settings.Lifes >= 0)
+                {
+                    _player.transform.position = transform.position;
+                    _player.gameObject.SetActive(true);
+                }
             }
             _playerSpawned = true;
         }
