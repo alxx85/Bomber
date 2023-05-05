@@ -123,55 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &11590440
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 11590442}
-  - component: {fileID: 11590441}
-  m_Layer: 0
-  m_Name: GameLevels
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &11590441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 11590440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dcb760078a818b4f8230f4686fb34de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _levels:
-  - {fileID: 11400000, guid: 0fa0d54fc66cc7d4e983f66f22caa09f, type: 2}
-  - {fileID: 11400000, guid: 2d36d4bff669fdb4d950d9306709027a, type: 2}
-  - {fileID: 11400000, guid: dd871f8d97784b0458f668bdfa03ea67, type: 2}
-  - {fileID: 11400000, guid: f0d03e452e1e09448b13a1a66a6c0eb7, type: 2}
---- !u!4 &11590442
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 11590440}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.25272, y: -3.203372, z: 7.9301305}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &181188993
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,11 +299,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTemplate: {fileID: 8612400999339722559, guid: 0378259ce54b39a4fb5fb0e5b45b938a, type: 3}
   _templateBomb: {fileID: 11430220, guid: b199b47907c182c4798a89268f9937cf, type: 3}
-  _currentLevel: 0
+  _currentLevel: 4
   _lifes: 4
   _speed: 3
   _bombAmount: 2
-  _bombPower: 2
+  _bombPower: 3
   _canKickBomb: 0
   _useShield: 0
   _explodeDelay: 3

@@ -59,34 +59,38 @@ public class WorldGenerator : MonoBehaviour
             int allBoosterAmount = 0;
             int j = 0;
 
+
             foreach (var booster in _levelBoosters)
                 allBoosterAmount += booster.Amount;
 
-            int[] hideBlockIndex = new int[allBoosterAmount];
-            maxHideIndex = _brickBlockAmount / allBoosterAmount;
-
-            for (int i = 0; i < hideBlockIndex.Length; i++)
+            if (allBoosterAmount > 0)
             {
-                hideBlockIndex[i] = UnityEngine.Random.Range(startHideIndex, i * maxHideIndex + maxHideIndex);
-                startHideIndex = hideBlockIndex[i] + 1;
-            }
+                int[] hideBlockIndex = new int[allBoosterAmount];
+                maxHideIndex = _brickBlockAmount / allBoosterAmount;
 
-            for (int i = 0; i < _brickBlockAmount; i++)
-            {
-                int position = _random.Next(_clearBlocks.Count());
-                Vector3Int SetPosition = _clearBlocks[position];
-                _clearBlocks.Remove(SetPosition);
-
-                if (i == hideBlockIndex[j])
+                for (int i = 0; i < hideBlockIndex.Length; i++)
                 {
-                    _world[SetPosition.x, SetPosition.z] = 4;
-
-                    if (j + 1 < hideBlockIndex.Length)
-                        j++;
+                    hideBlockIndex[i] = UnityEngine.Random.Range(startHideIndex, i * maxHideIndex + maxHideIndex);
+                    startHideIndex = hideBlockIndex[i] + 1;
                 }
-                else
+
+                for (int i = 0; i < _brickBlockAmount; i++)
                 {
-                    _world[SetPosition.x, SetPosition.z] = 3;
+                    int position = _random.Next(_clearBlocks.Count());
+                    Vector3Int SetPosition = _clearBlocks[position];
+                    _clearBlocks.Remove(SetPosition);
+
+                    if (i == hideBlockIndex[j])
+                    {
+                        _world[SetPosition.x, SetPosition.z] = 4;
+
+                        if (j + 1 < hideBlockIndex.Length)
+                            j++;
+                    }
+                    else
+                    {
+                        _world[SetPosition.x, SetPosition.z] = 3;
+                    }
                 }
             }
         }

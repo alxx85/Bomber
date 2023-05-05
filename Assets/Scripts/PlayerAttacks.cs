@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class PlayerAttacks : MonoBehaviour
 {
-    [SerializeField] private int _bombDelay;
+    //[SerializeField] private int _bombDelay;
     [SerializeField] private Bomb _template;
     [SerializeField] private LayerMask _destroyedMask;
 
     private List<Bomb> _bombsInstalled = new List<Bomb>();
     private GameSettings _setting;
-    private PlayerMovement _mover;
+    //private PlayerMovement _mover;
     private PlayerInput _input;
 
     private void Awake()
     {
-        _mover = GetComponent<PlayerMovement>();
+        //_mover = GetComponent<PlayerMovement>();
         _input = GetComponent<PlayerInput>();
     }
 

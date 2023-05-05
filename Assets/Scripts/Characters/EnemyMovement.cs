@@ -55,7 +55,7 @@ public class EnemyMovement : Movement
         }
     }
 
-    private void ChangingDirection()
+    protected void ChangingDirection()
     {
         if (oldPosition != _input.GetRoundPosition(_rbody.position))
         {
@@ -72,8 +72,10 @@ public class EnemyMovement : Movement
             {
                 if (_input.GetRoundPosition(_rbody.position).x % 2 == 0 && _input.GetRoundPosition(_rbody.position).z % 2 == 0)
                 {
-                    //_moveDirection = Vector3.zero;
+                    _rbody.position = _input.GetRoundPosition(_rbody.position);
+                    _moveDirection = _input.GetDirection();
                     _changingDirection = true;
+                    oldPosition = _input.GetRoundPosition(_rbody.position);
                 }
             }
         }
