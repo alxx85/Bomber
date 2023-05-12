@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 1886651253470795808}
   _speed: 2
-  _stopMoveingDelay: 0.1
+  _stopMoveingDelay: 0.5
   _canChangingDirection: 1
 --- !u!114 &1886651253470795808
 MonoBehaviour:

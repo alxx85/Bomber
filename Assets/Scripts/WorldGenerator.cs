@@ -31,6 +31,11 @@ public class WorldGenerator : MonoBehaviour
         _settings = GameSettings.Instance;
         LevelSetting levelSetting = _settings.GetCurrentLevel();
         InitLevelSetting(levelSetting);
+
+        CreateWorldPlace();
+        CreateBricksBlockAndBoosts();
+        CreateEnemyPoints();
+        ViewCreatedWorld();
     }
 
     public void InitLevelSetting(LevelSetting levelSetting)
@@ -40,14 +45,9 @@ public class WorldGenerator : MonoBehaviour
         _brickBlockAmount = levelSetting.BrickBlockAmount;
         _brickBlock = levelSetting.BrickBlock;
         _stoneBlock = levelSetting.StoneBlock;
-        _levelEnemys = levelSetting.Enemys;
+        _levelEnemys = levelSetting.Enemys.ToList();
         _levelBoosters = levelSetting.LevelBoost.ToList();
         _world = new int[_xFieldSize, _zFieldSize];
-
-        CreateWorldPlace();
-        CreateBricksBlockAndBoosts();
-        CreateEnemyPoints();
-        ViewCreatedWorld();
     }
 
     private void CreateBricksBlockAndBoosts()

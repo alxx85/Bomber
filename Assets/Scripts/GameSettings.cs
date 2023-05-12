@@ -10,9 +10,6 @@ public class GameSettings : MonoBehaviour
     private const int BoostZero = 0;
     private const float BoostSpeedRate = .5f;
 
-    //[Header("Level")]
-    //[SerializeField] private GameLevels _levels;
-    //[SerializeField] private WorldGenerator _world;
     [Header("Player")]
     [SerializeField] private PlayerMovement _playerTemplate;
     [SerializeField] private Bomb _templateBomb;
@@ -42,9 +39,11 @@ public class GameSettings : MonoBehaviour
     private List<LevelSetting> _levels = new List<LevelSetting>();
     private Characters _player;
     private Portal _portal;
-
+    private float _startSpeed;
+    
     public int Lifes => _lifes;
     public float Speed => _speed;
+    public float SpeedLevel => (_speed - _startSpeed) / BoostSpeedRate;
     public int Bomb => _bombAmount;
     public int Power => _bombPower;
     public bool CanKick => _canKickBomb;
@@ -64,7 +63,7 @@ public class GameSettings : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(this);
-
+        _startSpeed = _speed;
         LoadLevels();
     }
 
@@ -133,7 +132,6 @@ public class GameSettings : MonoBehaviour
     {
         enemy.Dying -= OnEnemyDying;
         _levelEnemys.Remove(enemy);
-        // Add Bonus
 
         if (_levelEnemys.Count == 0)
         {
@@ -144,6 +142,7 @@ public class GameSettings : MonoBehaviour
     private void OnPlayerDying(Characters player)
     {
         _lifes--;
+        ChangedPlayerProperties?.Invoke();
     }
 
     private void ChangePlayerProperties(Boost booster)

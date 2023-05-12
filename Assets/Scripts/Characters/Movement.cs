@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
     protected Rigidbody _rbody;
     private CapsuleCollider _collider;
     protected Vector3 _moveDirection = Vector3.zero;
+    protected Vector3 _rotateDirection = Vector3.zero;
 
     public float CurrentRadius => _collider.radius;
 

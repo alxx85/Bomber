@@ -6,7 +6,6 @@ public class PlayerMovement : Movement
 
     private GameSettings _settings;
     private Camera_Controller _camera;
-    private Vector3 _rotateDirection = Vector3.forward;
 
     public Vector3 Direction => _rotateDirection;
 

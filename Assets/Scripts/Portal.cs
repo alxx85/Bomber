@@ -15,6 +15,7 @@ public class Portal : MonoBehaviour
     private Characters _player;
     private bool _isActiv = false;
     private bool _canSpawn;
+    private bool _canEndLevel = false;
     private bool _playerSpawned = false;
     private float _delay;
 
@@ -104,18 +105,28 @@ public class Portal : MonoBehaviour
         _delay = _timeToSpawn;
         _canSpawn = true;
         _playerSpawned = false;
+        _canEndLevel = false;
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (_isActiv)
         {
-            if (other.TryGetComponent(out PlayerMovement player))
+            if (_canEndLevel)
             {
-                Debug.Log("Level Completed!");
-                ChangedLevel?.Invoke(this, true);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                if (other.TryGetComponent(out PlayerMovement player))
+                {
+                    Debug.Log("Level Completed!");
+                    ChangedLevel?.Invoke(this, true);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerMovement player))
+            _canEndLevel = true;
     }
 }

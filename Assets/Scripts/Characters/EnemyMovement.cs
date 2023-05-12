@@ -26,6 +26,7 @@ public class EnemyMovement : Movement
 
         if (_moveDirection != Vector3.zero)
         {
+            _rotateDirection = _moveDirection;
             Moveing(_speed);
             _currentDelay = _stopMoveingDelay;
         }
@@ -86,13 +87,14 @@ public class EnemyMovement : Movement
     {
         _moveDirection = Vector3.zero;
         _rbody.velocity = new Vector3(0f, _rbody.velocity.y, 0f);
-        Debug.Log($"{gameObject.name} - {collision.gameObject.name}");
         _rbody.position = _input.GetRoundPosition(_rbody.position);
 
         if (collision.collider.TryGetComponent(out PlayerAttacks player))
         {
-            Debug.Log("Attack");
-            player.GetComponent<Characters>().TakeDamage(AttackType.Enemy);
+            Vector3 contactPosition = _rbody.position - _input.GetRoundPosition(player.transform.position);
+            
+            if (contactPosition != _rotateDirection)
+                player.GetComponent<Characters>().TakeDamage(AttackType.Enemy);
         }
     }
 }

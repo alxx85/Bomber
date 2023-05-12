@@ -16,12 +16,14 @@ MonoBehaviour:
   _height: 19
   _brickBlockAmount: 62
   _brickBlock: {fileID: 5741445534625150933, guid: cd8b4db18a74cab4b9229ad5c316d94d, type: 3}
-  _stoneBlock: {fileID: 5741445534625150933, guid: e5a58d2393c0c6e4a9968f14ce0d8a38, type: 3}
+  _stoneBlock: {fileID: 7123055087300125352, guid: f08c9b13de3839c40928b3ba5a7eea1b, type: 3}
   _levelBoost:
   - Booster: {fileID: 11400000, guid: f01f1106efdc0524694e22899a9e5bd4, type: 2}
     Amount: 1
+  - Booster: {fileID: 11400000, guid: ec2bab5188855864dbd9f1853a5e86c7, type: 2}
+    Amount: 1
   _enemys:
   - Enemy: {fileID: 4076125306654548178, guid: 0919bca513fb96e4e88f424bc99f18fb, type: 3}
-    Amount: 6
+    Amount: 4
   - Enemy: {fileID: 8742621749168377497, guid: 0991277324c947a44a6f5cf243cced1d, type: 3}
-    Amount: 2
+    Amount: 1
