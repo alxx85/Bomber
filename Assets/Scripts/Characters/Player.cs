@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Player : Characters
 {
     private GameSettings _setting;

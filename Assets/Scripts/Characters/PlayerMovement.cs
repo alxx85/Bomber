@@ -2,17 +2,27 @@ using UnityEngine;
 
 public class PlayerMovement : Movement
 {
+    private const string MOVE = "IsMoving";
+    private const string SPEED = "Speed";
+
     [SerializeField] private Inputs _input;
 
     private GameSettings _settings;
     private Camera_Controller _camera;
+    private Animator _animator;
 
     public Vector3 Direction => _rotateDirection;
+
+    private void OnEnable()
+    {
+        _animator = GetComponentInChildren<Animator>();
+    }
 
     private void Start()
     {
         _settings = GameSettings.Instance;
         Camera.main.GetComponent<Camera_Controller>().InitPlayer(this);
+        _animator.SetFloat(SPEED, _settings.Speed);
     }
 
     private void FixedUpdate()
@@ -24,6 +34,12 @@ public class PlayerMovement : Movement
         {
             _rotateDirection = _moveDirection;
             Moveing(_settings.Speed);
+            _animator.SetFloat(SPEED, _settings.Speed);
+            _animator.SetBool(MOVE, true);
+        }
+        else
+        {
+            _animator.SetBool(MOVE, false);
         }
     }
 }

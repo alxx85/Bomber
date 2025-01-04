@@ -194,7 +194,7 @@ public class StylizedSurfaceEditor : UnityEditor.ShaderGUI {
             EditorGUI.indentLevel = originalIntentLevel;
         }
 
-        if (UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null) {
+        if (UnityEngine.Rendering.GraphicsSettings.defaultRenderPipeline != null) {
             HandleUrpSettings(_target, _editor);
         }
 

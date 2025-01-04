@@ -86,7 +86,7 @@ public class EnemyMovement : Movement
     private void OnCollisionEnter(Collision collision)
     {
         _moveDirection = Vector3.zero;
-        _rbody.velocity = new Vector3(0f, _rbody.velocity.y, 0f);
+        _rbody.linearVelocity = new Vector3(0f, _rbody.linearVelocity.y, 0f);
         _rbody.position = _input.GetRoundPosition(_rbody.position);
 
         if (collision.collider.TryGetComponent(out PlayerAttacks player))

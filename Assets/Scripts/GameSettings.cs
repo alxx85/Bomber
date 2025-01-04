@@ -40,6 +40,7 @@ public class GameSettings : MonoBehaviour
     private Characters _player;
     private Portal _portal;
     private float _startSpeed;
+    //private int _bombIndex;
     
     public int Lifes => _lifes;
     public float Speed => _speed;
@@ -53,6 +54,7 @@ public class GameSettings : MonoBehaviour
     public float ActivateDelay => _explodeDelay;
     public PlayerMovement Player => _playerTemplate;
 
+
     public event Action ChangedPlayerProperties;
 
     private void Awake()
@@ -65,6 +67,8 @@ public class GameSettings : MonoBehaviour
         DontDestroyOnLoad(this);
         _startSpeed = _speed;
         LoadLevels();
+        //_bombIndex = 0;
+        //_canKickBomb = true;
     }
 
     private void OnDisable()
@@ -108,6 +112,13 @@ public class GameSettings : MonoBehaviour
     {
         ChangePlayerProperties(boost);
     }
+
+    //public int GetBombIndex()
+    //{
+    //    int index = _bombIndex;
+    //    _bombIndex++;
+    //    return index;
+    //}
 
     private void OnChangedLevel(Portal portal, bool nextLevel)
     {

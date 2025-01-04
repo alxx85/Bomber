@@ -52,12 +52,12 @@ public class WorldGenerator : MonoBehaviour
 
     private void CreateBricksBlockAndBoosts()
     {
-        if (_brickBlockAmount + _enemyAmount <= _clearBlocks.Count())
+        if (_brickBlockAmount + GetEnemyAmount() <= _clearBlocks.Count())
         {
             int startHideIndex = 0;
             int maxHideIndex = 0;
             int allBoosterAmount = 0;
-            int j = 0;
+            //int j = 0;
 
 
             foreach (var booster in _levelBoosters)
@@ -74,26 +74,36 @@ public class WorldGenerator : MonoBehaviour
                     startHideIndex = hideBlockIndex[i] + 1;
                 }
 
-                for (int i = 0; i < _brickBlockAmount; i++)
+                for (int i = 0; i < hideBlockIndex.Length; i++)
                 {
-                    int position = _random.Next(_clearBlocks.Count());
-                    Vector3Int SetPosition = _clearBlocks[position];
-                    _clearBlocks.Remove(SetPosition);
-
-                    if (i == hideBlockIndex[j])
-                    {
-                        _world[SetPosition.x, SetPosition.z] = 4;
-
-                        if (j + 1 < hideBlockIndex.Length)
-                            j++;
-                    }
-                    else
-                    {
-                        _world[SetPosition.x, SetPosition.z] = 3;
-                    }
+                    Vector3Int SetPosition = GetClearPosition();
+                    _world[SetPosition.x, SetPosition.z] = 4;
                 }
+
+            }
+            for (int i = 0; i < _brickBlockAmount; i++)
+            {
+                Vector3Int SetPosition = GetClearPosition();
+                _world[SetPosition.x, SetPosition.z] = 3;
             }
         }
+    }
+    private int GetEnemyAmount()
+    {
+        int count = 0;
+
+        for (int i = 0; i < _levelEnemys.Count; i++)
+            count += _levelEnemys[i].Amount;
+
+        return count;
+    }
+
+    private Vector3Int GetClearPosition()
+    {
+        int position = _random.Next(_clearBlocks.Count());
+        Vector3Int SetPosition = _clearBlocks[position];
+        _clearBlocks.Remove(SetPosition);
+        return SetPosition;
     }
 
     private void CreateEnemyPoints()
@@ -120,7 +130,7 @@ public class WorldGenerator : MonoBehaviour
             {
                 if (!_blockeds.Contains(new Vector3Int(x, 0, z)))
                 {
-                    if ((x == 1 & z == 1) || (x == 1 & z == 2) || (x == 2 & z == 1))
+                    if ((x == 1 && z == 1) || (x == 1 && z == 2) || (x == 2 & z == 1))
                         continue;
 
                     _clearBlocks.Add(new Vector3Int(x, 0, z));

@@ -27,6 +27,8 @@ public class Portal : MonoBehaviour
         _settings.InitLevelPortal(this);
         _delay = _timeToSpawn;
         _canSpawn = true;
+        StartEffects();
+        Camera.main.GetComponent<Camera_Controller>().InitPortal(this);
     }
 
     private void Update()
@@ -70,9 +72,19 @@ public class Portal : MonoBehaviour
     public void Activate()
     {
         _isActiv = true;
+        StartEffects();
+    }
 
+    private void StartEffects()
+    {
         foreach (var particle in _activateParticle)
             particle.Play();
+    }
+
+    private void StopEffects()
+    {
+        foreach (var particle in _activateParticle)
+            particle.Stop();
     }
 
     private void SpawnPlayerWithDelay()
@@ -97,6 +109,7 @@ public class Portal : MonoBehaviour
                 }
             }
             _playerSpawned = true;
+            StopEffects();
         }
     }
 
@@ -104,6 +117,7 @@ public class Portal : MonoBehaviour
     {
         _delay = _timeToSpawn;
         _canSpawn = true;
+        StartEffects();
         _playerSpawned = false;
         _canEndLevel = false;
     }

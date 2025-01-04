@@ -19,15 +19,11 @@ public class Bomb : MonoBehaviour
 
     public event Action<Bomb> Exploded;
 
+    //public int BombIndex { get; private set; }
+
     private void Awake()
     {
         _model = GetComponent<Renderer>();
-    }
-
-    private void OnEnable()
-    {
-        _setting = GameSettings.Instance;
-        Invoke(nameof(Explode), _setting.ActivateDelay);
     }
 
     private void OnDisable()
@@ -42,6 +38,19 @@ public class Bomb : MonoBehaviour
             CancelInvoke(nameof(Explode));
             Explode();
         }
+    }
+
+    public void Init()
+    {
+        _setting = GameSettings.Instance;
+        
+        if (!_setting.CanKick)
+            Invoke(nameof(Explode), _setting.ActivateDelay);
+    }
+
+    public void Activate()
+    {
+        Explode();
     }
 
     private void Explode()

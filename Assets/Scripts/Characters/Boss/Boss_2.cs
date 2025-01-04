@@ -7,6 +7,11 @@ public class Boss_2 : Bosses
 
     private bool _canSpawn = true;
 
+    public override void TakeDamage(AttackType attackedOf)
+    {
+        base.TakeDamage(attackedOf);
+    }
+
     protected override void ChangeAction()
     {
         StartCoroutine(SpawnEnemy());

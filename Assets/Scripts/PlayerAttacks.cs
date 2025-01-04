@@ -56,12 +56,18 @@ public class PlayerAttacks : MonoBehaviour
     private void OnKickedBomb()
     { 
         //kick bomb
+        if (_setting.CanKick && _bombsInstalled.Count > 0)
+        {
+            _bombsInstalled[0].Activate();
+            //_bombsInstalled[0].Exploded -= OnExploded;
+        }
     }
 
     private void BombInstall()
     {
         Bomb newBomb = Instantiate(_template, GetRoundPosition(), _template.transform.rotation);
         _bombsInstalled.Add(newBomb);
+        newBomb.Init();
         newBomb.Exploded += OnExploded;
     }
 

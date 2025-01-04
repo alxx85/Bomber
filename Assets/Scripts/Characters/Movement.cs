@@ -21,8 +21,8 @@ public class Movement : MonoBehaviour
 
     protected void Moveing(float speed)
     {
-        _moveDirection.y = _rbody.velocity.y;
-        _rbody.velocity = _moveDirection * speed;
+        _moveDirection.y = _rbody.linearVelocity.y;
+        _rbody.linearVelocity = _moveDirection * speed;
     }
 
     protected void Rotation(Vector3 direction)

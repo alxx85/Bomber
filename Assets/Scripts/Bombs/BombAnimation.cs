@@ -27,9 +27,12 @@ public class BombAnimation : MonoBehaviour
         if (_currentTime >= _totalTime)
             _currentTime -= _totalTime;
 
-        _currentColorTime += Time.deltaTime;
+        if (_setting.CanKick == false)
+        {
+            _currentColorTime += Time.deltaTime;
 
-        for (int i = 0; i < _bombMaterial.Length; i++)
-            _bombMaterial[i].material.color = new Color(_colorAnimation.Evaluate(_currentColorTime), 0, 0);
+            for (int i = 0; i < _bombMaterial.Length; i++)
+                _bombMaterial[i].material.color = new Color(_colorAnimation.Evaluate(_currentColorTime), 0, 0);
+        }
     }
 }

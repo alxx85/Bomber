@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d13db4b037d32cd4dba84c9c73b38269, type: 3}
+  m_Name: 5
+  m_EditorClassIdentifier: 
+  _width: 19
+  _height: 19
+  _brickBlockAmount: 37
+  _brickBlock: {fileID: 151913761396702847, guid: 2ac5a1391bbfb094b94b062c3922cc0b, type: 3}
+  _stoneBlock: {fileID: 1163818295347400644, guid: fa0d38719a75ad44c8655b9097a3826e, type: 3}
+  _levelBoost:
+  - Booster: {fileID: 11400000, guid: f01f1106efdc0524694e22899a9e5bd4, type: 2}
+    Amount: 1
+  - Booster: {fileID: 11400000, guid: 47388658118e2094c84df7e5f3a73177, type: 2}
+    Amount: 1
+  - Booster: {fileID: 11400000, guid: 7dc68ffafe21f334db890d571c8e5b89, type: 2}
+    Amount: 1
+  _enemys:
+  - Enemy: {fileID: 4076125306654548178, guid: 0919bca513fb96e4e88f424bc99f18fb, type: 3}
+    Amount: 2
+  - Enemy: {fileID: 8742621749168377497, guid: 0991277324c947a44a6f5cf243cced1d, type: 3}
+    Amount: 3
