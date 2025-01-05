@@ -17,7 +17,9 @@ MonoBehaviour:
   _brickBlockAmount: 10
   _brickBlock: {fileID: 151913761396702847, guid: 2ac5a1391bbfb094b94b062c3922cc0b, type: 3}
   _stoneBlock: {fileID: 5741445534625150933, guid: e5a58d2393c0c6e4a9968f14ce0d8a38, type: 3}
-  _levelBoost: []
+  _levelBoost:
+  - Booster: {fileID: 11400000, guid: 4aa22c72514f867449187e5da3c65ee4, type: 2}
+    Amount: 1
   _enemys:
   - Enemy: {fileID: 7106903700110251646, guid: 087d021165edecb4ca3f7ab858131b81, type: 3}
     Amount: 1

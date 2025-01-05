@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     private CapsuleCollider _collider;
     protected Vector3 _moveDirection = Vector3.zero;
     protected Vector3 _rotateDirection = Vector3.zero;
+    protected Animator _animator;
 
     public float CurrentRadius => _collider.radius;
 
@@ -17,6 +18,7 @@ public class Movement : MonoBehaviour
     {
         _rbody = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     protected void Moveing(float speed)

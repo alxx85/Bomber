@@ -10,22 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d13db4b037d32cd4dba84c9c73b38269, type: 3}
-  m_Name: 2
+  m_Name: 6
   m_EditorClassIdentifier: 
-  _width: 19
-  _height: 19
-  _brickBlockAmount: 62
+  _width: 21
+  _height: 21
+  _brickBlockAmount: 80
   _brickBlock: {fileID: 5741445534625150933, guid: cd8b4db18a74cab4b9229ad5c316d94d, type: 3}
-  _stoneBlock: {fileID: 7123055087300125352, guid: f08c9b13de3839c40928b3ba5a7eea1b, type: 3}
+  _stoneBlock: {fileID: 5741445534625150933, guid: e5a58d2393c0c6e4a9968f14ce0d8a38, type: 3}
   _levelBoost:
   - Booster: {fileID: 11400000, guid: f01f1106efdc0524694e22899a9e5bd4, type: 2}
-    Amount: 1
-  - Booster: {fileID: 11400000, guid: 47388658118e2094c84df7e5f3a73177, type: 2}
     Amount: 1
   - Booster: {fileID: 11400000, guid: 7dc68ffafe21f334db890d571c8e5b89, type: 2}
     Amount: 1
   _enemys:
-  - Enemy: {fileID: 1263824757994787787, guid: 7c9d891fb61f2ad4f9ed56b63e74b2da, type: 3}
-    Amount: 4
   - Enemy: {fileID: 4076125306654548178, guid: 0919bca513fb96e4e88f424bc99f18fb, type: 3}
-    Amount: 3
+    Amount: 2
+  - Enemy: {fileID: 8742621749168377497, guid: 0991277324c947a44a6f5cf243cced1d, type: 3}
+    Amount: 5

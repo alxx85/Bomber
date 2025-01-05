@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyMovement : Movement
 {
+    private const string MOVE = "Move";
+
     [SerializeField] private EnemyInput _input;
     [SerializeField] private float _speed = 1f;
     [SerializeField] private float _stopMoveingDelay = .1f;
@@ -28,10 +30,12 @@ public class EnemyMovement : Movement
         {
             _rotateDirection = _moveDirection;
             Moveing(_speed);
+            _animator.SetBool(MOVE, true);
             _currentDelay = _stopMoveingDelay;
         }
         else
         {
+            _animator.SetBool(MOVE, false);
             _currentDelay -= Time.deltaTime;
 
             if (_currentDelay <= 0 && _isBlocked)

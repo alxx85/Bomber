@@ -9,14 +9,8 @@ public class PlayerMovement : Movement
 
     private GameSettings _settings;
     private Camera_Controller _camera;
-    private Animator _animator;
 
     public Vector3 Direction => _rotateDirection;
-
-    private void OnEnable()
-    {
-        _animator = GetComponentInChildren<Animator>();
-    }
 
     private void Start()
     {

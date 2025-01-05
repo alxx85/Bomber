@@ -20,6 +20,8 @@ MonoBehaviour:
   _levelBoost:
   - Booster: {fileID: 11400000, guid: 7dc68ffafe21f334db890d571c8e5b89, type: 2}
     Amount: 1
+  - Booster: {fileID: 11400000, guid: 47388658118e2094c84df7e5f3a73177, type: 2}
+    Amount: 1
   _enemys:
   - Enemy: {fileID: 1263824757994787787, guid: 7c9d891fb61f2ad4f9ed56b63e74b2da, type: 3}
     Amount: 3
