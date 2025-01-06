@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0620c000a63dd40aaec14bd9db233a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 2
+  _health: 1
   _takeDamageCooldown: 1
 --- !u!54 &455483628190352558
 Rigidbody:

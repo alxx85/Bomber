@@ -895,7 +895,7 @@ MonoBehaviour:
   _lifes: 4
   _speed: 3
   _bombAmount: 1
-  _bombPower: 2
+  _bombPower: 1
   _canKickBomb: 0
   _useShield: 0
   _explodeDelay: 3

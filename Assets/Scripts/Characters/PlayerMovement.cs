@@ -9,14 +9,16 @@ public class PlayerMovement : Movement
 
     private GameSettings _settings;
     private Camera_Controller _camera;
+    private float _normalSpeed;
 
     public Vector3 Direction => _rotateDirection;
 
     private void Start()
     {
         _settings = GameSettings.Instance;
+        _normalSpeed = _settings.Speed;
         Camera.main.GetComponent<Camera_Controller>().InitPlayer(this);
-        _animator.SetFloat(SPEED, _settings.Speed);
+        _animator.SetFloat(SPEED, _settings.Speed - _normalSpeed);
     }
 
     private void FixedUpdate()
@@ -28,7 +30,8 @@ public class PlayerMovement : Movement
         {
             _rotateDirection = _moveDirection;
             Moveing(_settings.Speed);
-            _animator.SetFloat(SPEED, _settings.Speed);
+            float animationSpeed = _settings.Speed - _normalSpeed;
+            _animator.SetFloat(SPEED, animationSpeed + 1);
             _animator.SetBool(MOVE, true);
         }
         else
