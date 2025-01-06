@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyInput : Inputs
 {
     [SerializeField] private LayerMask _blockedMask;
+
     private List<Vector3> _possibleDirections = new List<Vector3> { Vector3.left, Vector3.forward, Vector3.back, Vector3.right };
     private System.Random _getRandom = new System.Random();
 

@@ -8,6 +8,7 @@ public class EnemyMovement : Movement
     [SerializeField] private float _speed = 1f;
     [SerializeField] private float _stopMoveingDelay = .1f;
     [SerializeField] private bool _canChangingDirection;
+    [SerializeField] private int _minChangingDirectionDistance = 2;
 
     private float _blockedSearchDelay = .5f;
     private float _unblockedDelay = .8f;
@@ -15,6 +16,7 @@ public class EnemyMovement : Movement
     private bool _isBlocked = true;
     private Vector3 oldPosition;
     private bool _changingDirection;
+    [SerializeField] private int _currentDistance = 0;
 
     private void Start()
     {
@@ -24,6 +26,9 @@ public class EnemyMovement : Movement
 
     private void FixedUpdate()
     {
+        if (_canChangingDirection)
+            ChangingDirection();
+
         Rotation(_moveDirection);
 
         if (_moveDirection != Vector3.zero)
@@ -53,19 +58,21 @@ public class EnemyMovement : Movement
                 _moveDirection = _input.GetDirection();
             }
         }
-
-        if (_canChangingDirection)
-        {
-            ChangingDirection();
-        }
     }
 
     protected void ChangingDirection()
     {
         if (oldPosition != _input.GetRoundPosition(_rbody.position))
         {
-            _changingDirection = false;
+            if (_currentDistance >= _minChangingDirectionDistance)
+            {
+                _changingDirection = false;
+                //_moveDirection = Vector3.zero;
+                //_currentDistance = 0;
+            }
+            
             oldPosition = _input.GetRoundPosition(_rbody.position);
+            _currentDistance++;
         }
 
         if (_changingDirection == false)
@@ -81,6 +88,7 @@ public class EnemyMovement : Movement
                     _moveDirection = _input.GetDirection();
                     _changingDirection = true;
                     oldPosition = _input.GetRoundPosition(_rbody.position);
+                    _currentDistance = 0;
                 }
             }
         }
@@ -90,6 +98,7 @@ public class EnemyMovement : Movement
     private void OnCollisionEnter(Collision collision)
     {
         _moveDirection = Vector3.zero;
+        _currentDistance = 0;
         _rbody.linearVelocity = new Vector3(0f, _rbody.linearVelocity.y, 0f);
         _rbody.position = _input.GetRoundPosition(_rbody.position);
 

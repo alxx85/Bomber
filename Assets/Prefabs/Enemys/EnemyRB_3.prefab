@@ -753,6 +753,8 @@ MonoBehaviour:
   _speed: 2
   _stopMoveingDelay: 0.5
   _canChangingDirection: 1
+  _minChangingDirectionDistance: 1
+  _currentDistance: 0
 --- !u!114 &1886651253470795808
 MonoBehaviour:
   m_ObjectHideFlags: 0

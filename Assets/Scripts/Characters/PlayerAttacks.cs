@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class PlayerAttacks : MonoBehaviour
 {
-    //[SerializeField] private int _bombDelay;
     [SerializeField] private Bomb _template;
     [SerializeField] private LayerMask _destroyedMask;
 
     private List<Bomb> _bombsInstalled = new List<Bomb>();
     private GameSettings _setting;
-    //private PlayerMovement _mover;
     private PlayerInput _input;
 
     private void Awake()
     {
-        //_mover = GetComponent<PlayerMovement>();
         _input = GetComponent<PlayerInput>();
     }
 
@@ -32,6 +29,7 @@ public class PlayerAttacks : MonoBehaviour
             foreach (var bomb in _bombsInstalled)
             {
                 bomb.Exploded -= OnExploded;
+                Destroy(bomb.gameObject);
             }
             _bombsInstalled.Clear();
         }
@@ -55,11 +53,10 @@ public class PlayerAttacks : MonoBehaviour
 
     private void OnKickedBomb()
     { 
-        //kick bomb
+        //Hand activate bomb
         if (_setting.CanKick && _bombsInstalled.Count > 0)
         {
             _bombsInstalled[0].Activate();
-            //_bombsInstalled[0].Exploded -= OnExploded;
         }
     }
 

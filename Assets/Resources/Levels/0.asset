@@ -23,3 +23,5 @@ MonoBehaviour:
   _enemys:
   - Enemy: {fileID: 1263824757994787787, guid: 7c9d891fb61f2ad4f9ed56b63e74b2da, type: 3}
     Amount: 2
+  - Enemy: {fileID: 6298984094006490433, guid: 6f7f0e7f11704024fa08b1fda2db6263, type: 3}
+    Amount: 1
