@@ -78,13 +78,15 @@ public class Bomb : MonoBehaviour
 
             if (hit.collider == null)
             {
-                Instantiate(_fireTemplate, transform.position + direction * i, _fireTemplate.transform.rotation);
+                Fire fire = Instantiate(_fireTemplate, transform.position + direction * i, _fireTemplate.transform.rotation);
+                fire.Init(direction);
             }
             else
             {
                 if (hit.collider.TryGetComponent(out Destroyable destroy))
                 {
-                    Instantiate(_fireTemplate, transform.position + direction * i, _fireTemplate.transform.rotation);
+                    Fire fire = Instantiate(_fireTemplate, transform.position + direction * i, _fireTemplate.transform.rotation);
+                    fire.Init(direction);
                 }
                 break;
             }
