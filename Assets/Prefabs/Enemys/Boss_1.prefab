@@ -895,9 +895,9 @@ MonoBehaviour:
   _health: 3
   _takeDamageCooldown: 1
   _startActionDelay: 10
-  _stopActionDelay: 10
+  _stopActionDelay: 8
   _render: {fileID: 1902192121168060501}
-  _shieldColor: {r: 0.8396226, g: 0.08317016, b: 0.5633135, a: 1}
+  _damageColor: {r: 0.990566, g: 0.2009167, b: 0.54176706, a: 1}
 --- !u!54 &-1257566215541597700
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -979,6 +979,8 @@ MonoBehaviour:
   _speed: 1.8
   _stopMoveingDelay: 0.5
   _canChangingDirection: 1
+  _minChangingDirectionDistance: 2
+  _currentDistance: 0
 --- !u!1 &3599330925665962980
 GameObject:
   m_ObjectHideFlags: 0

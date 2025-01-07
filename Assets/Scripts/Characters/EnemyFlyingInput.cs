@@ -1,3 +1,1 @@
-public class EnemyFlyingInput : EnemyInput
-{
-}
+public class EnemyFlyingInput : EnemyInput { }

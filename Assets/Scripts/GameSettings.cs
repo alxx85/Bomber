@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameSettings : MonoBehaviour
@@ -53,7 +54,7 @@ public class GameSettings : MonoBehaviour
     public int Height => _levels[_currentLevel].Height;
     public float ActivateDelay => _explodeDelay;
     public PlayerMovement Player => _playerTemplate;
-
+    public bool LevelClear => _levelEnemys.Count == 0;
 
     public event Action ChangedPlayerProperties;
 
@@ -86,7 +87,8 @@ public class GameSettings : MonoBehaviour
 
     public LevelSetting GetCurrentLevel()
     {
-        LevelSetting level = _levels[_currentLevel];
+        int index = _levels.FindIndex(level => level.name == _currentLevel.ToString());
+        LevelSetting level = _levels[index];
         return level;
     }
 
@@ -132,7 +134,7 @@ public class GameSettings : MonoBehaviour
     private void LoadLevels()
     {
         var levels = Resources.LoadAll("Levels/", typeof(LevelSetting));
-
+        
         foreach (var item in levels)
         {
             _levels.Add((LevelSetting)item);

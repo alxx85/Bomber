@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf80089cd79a8164a857de168a86cc8b, type: 3}
   m_Name: Kick
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 21300000, guid: 3539bb6eee5a54348b80ab442b9ae328, type: 3}
+  _sprite: {fileID: 21300000, guid: 1a281211297f3bc45b4bc4265dd57970, type: 3}
   _color: {r: 0.9117655, g: 0.9528302, b: 0.34117648, a: 1}
   _life: 0
   _speed: 0
