@@ -28,8 +28,6 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private int _maxSpeed = 6;
     [SerializeField] private int _maxBombAmount = 8;
     [SerializeField] private int _maxBombPower = 10;
-    [Header("UI Properties")]
-    [SerializeField] private BossStatsViewer _bossStatsViewer;
 
     [Header("Player Input")]
     public KeyCode LeftKey;
@@ -41,6 +39,7 @@ public class GameSettings : MonoBehaviour
 
     private List<Characters> _levelEnemys = new List<Characters>();
     private List<LevelSetting> _levels = new List<LevelSetting>();
+    private BossStatsViewer _bossStatsViewer;
     private Characters _player;
     private Portal _portal;
     private float _startSpeed;
@@ -63,6 +62,7 @@ public class GameSettings : MonoBehaviour
     public BossStatsViewer BossStatsViewer => _bossStatsViewer;
 
     public event Action<int, int> ChangedLevelTime;
+    public event Action<int> ChangedEnemyCount;
     public event Action LevelTimeEnded;
     public event Action ChangedPlayerProperties;
 
@@ -89,6 +89,11 @@ public class GameSettings : MonoBehaviour
         {
             enemy.Dying -= OnEnemyDying;
         }
+    }
+
+    public void InitBossStats(BossStatsViewer viewer)
+    {
+        _bossStatsViewer = viewer;
     }
 
     public int GetLevelNumber() => _currentLevel;
@@ -124,6 +129,7 @@ public class GameSettings : MonoBehaviour
     {
         _levelEnemys.Add(enemy);
         enemy.Dying += OnEnemyDying;
+        ChangedEnemyCount?.Invoke(_levelEnemys.Count);
     }
 
     public void PickupBooster(Boost boost)
@@ -157,6 +163,7 @@ public class GameSettings : MonoBehaviour
     {
         enemy.Dying -= OnEnemyDying;
         _levelEnemys.Remove(enemy);
+        ChangedEnemyCount?.Invoke(_levelEnemys.Count);
 
         if (_levelEnemys.Count == 0)
         {
@@ -204,6 +211,8 @@ public class GameSettings : MonoBehaviour
 
     private IEnumerator TimeTick(int timer)
     {
+        ChangedEnemyCount?.Invoke(_levelEnemys.Count);
+
         do
         {
             yield return _timer;

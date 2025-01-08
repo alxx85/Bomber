@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class BossStatsViewer : MonoBehaviour
@@ -7,6 +6,12 @@ public class BossStatsViewer : MonoBehaviour
     [SerializeField] private BarPresenter _timeBar;
 
     private Bosses _boss;
+
+    private void Start()
+    {
+        GameSettings.Instance.InitBossStats(this);
+        gameObject.SetActive(false);
+    }
 
     public void Init(Bosses boss)
     {
