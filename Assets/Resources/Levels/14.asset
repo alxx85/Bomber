@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _width: 19
   _height: 19
+  _levelTime: 480
   _brickBlockAmount: 20
   _brickBlock: {fileID: 151913761396702847, guid: 2ac5a1391bbfb094b94b062c3922cc0b, type: 3}
   _stoneBlock: {fileID: 5741445534625150933, guid: e5a58d2393c0c6e4a9968f14ce0d8a38, type: 3}

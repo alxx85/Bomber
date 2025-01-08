@@ -1,12 +1,15 @@
+using System;
 using UnityEngine;
 
 public class Boss_1 : Bosses
 {
-    [SerializeField] private float _stopActionDelay = 10f;
+    [SerializeField] private int _stopActionDelay = 10;
     [SerializeField] private Renderer _render;
     [SerializeField] private Color _damageColor;
 
     private Color _baseColor;
+
+    public override event Action<int, int> ChangedTimer;
 
     private void OnEnable()
     {
@@ -18,20 +21,19 @@ public class Boss_1 : Bosses
     {
         base.FixedUpdate();
 
-        if (_isActiveAction)
+        if (isActiveAction)
         {
-            if (_actionTimer >= _stopActionDelay)
+            if (actionTimer >= _stopActionDelay)
             {
-                _isActiveAction = false;
+                isActiveAction = false;
                 ChangeAction();
             }
         }
-
     }
 
     public override void TakeDamage(AttackType attackedOf)
     {
-        if (_isActiveAction)
+        if (isActiveAction == false)
             return;
 
         base.TakeDamage(attackedOf);
@@ -39,7 +41,7 @@ public class Boss_1 : Bosses
 
     protected override void ChangeAction()
     {
-        if (_isActiveAction)
+        if (isActiveAction)
         {
             _render.material.color = _damageColor;
         }
@@ -49,5 +51,13 @@ public class Boss_1 : Bosses
         }
 
         base.ChangeAction();
+    }
+
+    protected override void TimerTick()
+    {
+        if (isActiveAction)
+            ChangedTimer?.Invoke(actionTimer, _stopActionDelay);
+        else
+            ChangedTimer?.Invoke(actionTimer, startActionDelay);
     }
 }

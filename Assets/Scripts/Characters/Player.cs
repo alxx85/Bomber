@@ -8,7 +8,7 @@ public class Player : Characters
     private void Start()
     {
         _setting = GameSettings.Instance;
-        _startedHealth = _health;
+        _startedHealth = health;
     }
 
     public override void TakeDamage(AttackType attackedOf)
@@ -25,7 +25,7 @@ public class Player : Characters
     public override void Died()
     {
         gameObject.SetActive(false);
-        _health = _startedHealth;
+        health = _startedHealth;
     }
 
 }

@@ -16,7 +16,7 @@ public class EnemyMovement : Movement
     private bool _isBlocked = true;
     private Vector3 oldPosition;
     private bool _changingDirection;
-    [SerializeField] private int _currentDistance = 0;
+    private int _currentDistance = 0;
 
     private void Start()
     {

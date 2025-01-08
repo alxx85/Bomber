@@ -109,7 +109,7 @@ public class Portal : MonoBehaviour
                 }
             }
 
-            if (_settings.LevelClear)
+            if (_settings.LevelClear == false)
                 StopEffects();
             
             _playerSpawned = true;

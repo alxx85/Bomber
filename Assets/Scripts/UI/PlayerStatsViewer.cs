@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class StatsViewer : MonoBehaviour
+public class PlayerStatsViewer : MonoBehaviour
 {
-    [SerializeField] private StatView _life;
-    [SerializeField] private StatView _speed;
-    [SerializeField] private StatView _bombAmount;
-    [SerializeField] private StatView _bombPower;
+    [SerializeField] private PlayerStatPresenter _life;
+    [SerializeField] private PlayerStatPresenter _speed;
+    [SerializeField] private PlayerStatPresenter _bombAmount;
+    [SerializeField] private PlayerStatPresenter _bombPower;
 
     private GameSettings _settings;
 

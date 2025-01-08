@@ -1,33 +1,79 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class Bosses : Characters
 {
-    [SerializeField] protected float _startActionDelay = 10f;
+    [SerializeField] protected int startActionDelay = 10;
 
-    protected float _actionTimer = 0;
-    protected bool _isActiveAction = false;
+    protected int actionTimer = 0;
+    protected bool isActiveAction = false;
+
+    private BossStatsViewer _bossStats;
+    private bool _isAlive = true;
+    private int _maxHealth;
+    private Coroutine _timerCoroutine;
+    private WaitForSeconds _timer = new WaitForSeconds(1);
+
+    public virtual event Action<int, int> ChangedTimer;
+    public event Action<int, int> ChangedHealth;
+
+    private void Start()
+    {
+        _bossStats = GameSettings.Instance.BossStatsViewer;
+        _bossStats.gameObject.SetActive(true);
+        _bossStats.Init(this);
+        _maxHealth = health;
+        TimerTick();
+        ChangedHealth?.Invoke(health, _maxHealth);
+        _timerCoroutine = StartCoroutine(StartTimer());
+    }
 
     protected virtual void FixedUpdate()
     {
-        _actionTimer += Time.fixedDeltaTime;
+        //actionTimer += Time.fixedDeltaTime;
 
-        if (_isActiveAction == false)
+        if (isActiveAction == false)
         {
-            if (_actionTimer >= _startActionDelay)
+            if (actionTimer >= startActionDelay)
             {
-                _isActiveAction = true;
+                isActiveAction = true;
                 ChangeAction();
             }
         }
     }
 
+    public override void TakeDamage(AttackType attackedOf)
+    {
+        base.TakeDamage(attackedOf);
+        ChangedHealth?.Invoke(health, _maxHealth);
+    }
+
     public override void Died()
     {
+        _isAlive = false;
+        StopCoroutine(_timerCoroutine);
+        _bossStats.gameObject.SetActive(false);
         Destroy(gameObject);
     }
 
     protected virtual void ChangeAction()
     {
-        _actionTimer = 0;
+        actionTimer = 0;
+    }
+
+    protected virtual void TimerTick()
+    {
+        ChangedTimer?.Invoke(actionTimer, startActionDelay);
+    }
+
+    private IEnumerator StartTimer()
+    {
+        while (_isAlive)
+        {
+            yield return _timer;
+            actionTimer++;
+            TimerTick();
+        }
     }
 }

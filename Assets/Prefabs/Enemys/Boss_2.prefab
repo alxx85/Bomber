@@ -49,16 +49,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818143518007f90499aa7f615d4864fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 3
+  health: 4
   _takeDamageCooldown: 1
-  _startActionDelay: 5
+  startActionDelay: 10
   _templates:
   - {fileID: 4076125306654548178, guid: 0919bca513fb96e4e88f424bc99f18fb, type: 3}
   - {fileID: 8742621749168377497, guid: 0991277324c947a44a6f5cf243cced1d, type: 3}
   - {fileID: 8771083638413315282, guid: f7806b534657cab4082097d9f8c086c2, type: 3}
   - {fileID: 6298984094006490433, guid: 6f7f0e7f11704024fa08b1fda2db6263, type: 3}
   - {fileID: 2794379283626534191, guid: 9fe1f9669211d734383331e74a51c0c2, type: 3}
-  _addChangedDelay: 2.5
+  _addChangedDelay: 2
   _changedDelayByCount: 3
 --- !u!54 &-1257566215541597700
 Rigidbody:
@@ -142,7 +142,6 @@ MonoBehaviour:
   _stopMoveingDelay: 0.8
   _canChangingDirection: 1
   _minChangingDirectionDistance: 2
-  _currentDistance: 0
 --- !u!1001 &2453254567326697388
 PrefabInstance:
   m_ObjectHideFlags: 0

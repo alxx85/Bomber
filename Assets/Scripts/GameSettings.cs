@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,8 +26,10 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private float _explodeDelay = 3f;
     [Header("Limit Properties")]
     [SerializeField] private int _maxSpeed = 6;
-    [SerializeField] private int _maxBombAmount = 8; 
+    [SerializeField] private int _maxBombAmount = 8;
     [SerializeField] private int _maxBombPower = 10;
+    [Header("UI Properties")]
+    [SerializeField] private BossStatsViewer _bossStatsViewer;
 
     [Header("Player Input")]
     public KeyCode LeftKey;
@@ -41,8 +44,10 @@ public class GameSettings : MonoBehaviour
     private Characters _player;
     private Portal _portal;
     private float _startSpeed;
-    //private int _bombIndex;
-    
+    private int _currentTime;
+    private WaitForSeconds _timer = new WaitForSeconds(1f);
+    private Coroutine _coroutineTimer;
+
     public int Lifes => _lifes;
     public float Speed => _speed;
     public float SpeedLevel => (_speed - _startSpeed) / BoostSpeedRate;
@@ -55,7 +60,10 @@ public class GameSettings : MonoBehaviour
     public float ActivateDelay => _explodeDelay;
     public PlayerMovement Player => _playerTemplate;
     public bool LevelClear => _levelEnemys.Count == 0;
+    public BossStatsViewer BossStatsViewer => _bossStatsViewer;
 
+    public event Action<int, int> ChangedLevelTime;
+    public event Action LevelTimeEnded;
     public event Action ChangedPlayerProperties;
 
     private void Awake()
@@ -68,8 +76,6 @@ public class GameSettings : MonoBehaviour
         DontDestroyOnLoad(this);
         _startSpeed = _speed;
         LoadLevels();
-        //_bombIndex = 0;
-        //_canKickBomb = true;
     }
 
     private void OnDisable()
@@ -83,6 +89,15 @@ public class GameSettings : MonoBehaviour
         {
             enemy.Dying -= OnEnemyDying;
         }
+    }
+
+    public int GetLevelNumber() => _currentLevel;
+
+    public void StartLevelTimer(int delay)
+    {
+        _currentTime = delay;
+        ChangedLevelTime?.Invoke(_currentTime, delay);
+        //_coroutineTimer = StartCoroutine(TimeTick(delay));
     }
 
     public LevelSetting GetCurrentLevel()
@@ -102,6 +117,7 @@ public class GameSettings : MonoBehaviour
     {
         _portal = portal;
         _portal.ChangedLevel += OnChangedLevel;
+        _coroutineTimer = StartCoroutine(TimeTick(_currentTime));
     }
 
     public void AddEnemyOnList(Characters enemy)
@@ -115,17 +131,13 @@ public class GameSettings : MonoBehaviour
         ChangePlayerProperties(boost);
     }
 
-    //public int GetBombIndex()
-    //{
-    //    int index = _bombIndex;
-    //    _bombIndex++;
-    //    return index;
-    //}
-
     private void OnChangedLevel(Portal portal, bool nextLevel)
     {
         portal.ChangedLevel -= OnChangedLevel;
         _portal = null;
+        StopCoroutine(_coroutineTimer);
+        _coroutineTimer = null;
+        _levelEnemys.Clear();
 
         if (nextLevel && _currentLevel < _levels.Count - 1)
             _currentLevel++;
@@ -156,6 +168,16 @@ public class GameSettings : MonoBehaviour
     {
         _lifes--;
         ChangedPlayerProperties?.Invoke();
+        CheckAlive();
+    }
+
+    private void CheckAlive()
+    {
+        if (_lifes <= 0)
+        {
+            //Show player dying screen;
+            Debug.Log("Player is die!\nYou lose game! :)");
+        }
     }
 
     private void ChangePlayerProperties(Boost booster)
@@ -178,5 +200,17 @@ public class GameSettings : MonoBehaviour
             _useShield = booster.Shield;
 
         ChangedPlayerProperties?.Invoke();
+    }
+
+    private IEnumerator TimeTick(int timer)
+    {
+        do
+        {
+            yield return _timer;
+            _currentTime--;
+            _currentTime = Mathf.Clamp(_currentTime, 0, timer);
+            ChangedLevelTime?.Invoke(_currentTime, timer);
+        } while (_currentTime > 0);
+        LevelTimeEnded?.Invoke();
     }
 }

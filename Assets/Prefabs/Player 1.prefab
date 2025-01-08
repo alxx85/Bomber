@@ -1447,7 +1447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06b1f8dc6534846b728291eee2f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 1
+  health: 0
   _takeDamageCooldown: 1
 --- !u!54 &-4878516302307948892
 Rigidbody:
@@ -1524,6 +1524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3c3409325bafa34ba328b768ed956e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _leftBut: f
 --- !u!1 &8059898633632817897
 GameObject:
   m_ObjectHideFlags: 0

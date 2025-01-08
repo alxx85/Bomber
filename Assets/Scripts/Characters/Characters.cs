@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Characters : MonoBehaviour, IDamageable
 {
-    [SerializeField] protected int _health;
+    [SerializeField] protected int health;
     [SerializeField] private float _takeDamageCooldown;
 
     private float _currentDelay;
@@ -20,7 +20,7 @@ public abstract class Characters : MonoBehaviour, IDamageable
         if (_takeDamageCooldown > _currentDelay)
             return;
 
-        _health--;
+        health--;
         _currentDelay = 0;
         CheckAlife();
     }
@@ -29,7 +29,7 @@ public abstract class Characters : MonoBehaviour, IDamageable
 
     private void CheckAlife()
     {
-        if (_health <= 0)
+        if (health <= 0)
         {
             Dying?.Invoke(this);
             Died();

@@ -746,7 +746,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a56ca27346824e848a5995c1d09b4223, type: 2}
+  - {fileID: 2100000, guid: 34520d1232bf93c4cacaf1be6d86c51f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -856,7 +856,7 @@ GameObject:
   - component: {fileID: -941055975669201550}
   - component: {fileID: -6992200319098098430}
   m_Layer: 7
-  m_Name: Boss_1
+  m_Name: Boss_Up_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -892,10 +892,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd70ae1a2932c64e9ebde9269be5d15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  health: 4
   _takeDamageCooldown: 1
   startActionDelay: 10
-  _stopActionDelay: 9
+  _stopActionDelay: 4
   _render: {fileID: 1902192121168060501}
   _damageColor: {r: 0.990566, g: 0.2009167, b: 0.54176706, a: 1}
 --- !u!54 &-1257566215541597700

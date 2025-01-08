@@ -5,26 +5,21 @@ using UnityEngine;
 public class Boss_2 : Bosses
 {
     [SerializeField] private List<Enemy> _templates;
-    [SerializeField] private float _addChangedDelay = 0;
+    [SerializeField] private int _addChangedDelay = 0;
     [SerializeField] private int _changedDelayByCount = 3;
 
     private bool _canSpawn = true;
     private int _spawnCount = 0;
 
-    public override void TakeDamage(AttackType attackedOf)
-    {
-        base.TakeDamage(attackedOf);
-    }
-
     protected override void ChangeAction()
     {
         StartCoroutine(SpawnEnemy());
-        _actionTimer = 0;
-        _isActiveAction = false;
+        actionTimer = 0;
+        isActiveAction = false;
 
         if (_changedDelayByCount > 0 && _spawnCount >= _changedDelayByCount)
         {
-            _startActionDelay += _addChangedDelay;
+            startActionDelay += _addChangedDelay;
             _spawnCount = 0;
         }
     }

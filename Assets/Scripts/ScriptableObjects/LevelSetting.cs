@@ -6,14 +6,17 @@ public class LevelSetting : ScriptableObject
 {
     [SerializeField] private int _width;
     [SerializeField] private int _height;
+    [SerializeField] private int _levelTime = 300;
     [SerializeField] private int _brickBlockAmount;
     [SerializeField] private GameObject _brickBlock;
     [SerializeField] private GameObject _stoneBlock;
     [SerializeField] private LevelBoost[] _levelBoost;
     [SerializeField] private LevelEnemy[] _enemys;
 
+
     public int Width => _width;
     public int Height => _height;
+    public int LevelTime => _levelTime;
     public int BrickBlockAmount => _brickBlockAmount;
     public GameObject BrickBlock => _brickBlock;
     public GameObject StoneBlock => _stoneBlock;

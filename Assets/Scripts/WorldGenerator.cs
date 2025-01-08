@@ -12,6 +12,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private Transform _worldZeroPoint;
     [SerializeField] private Portal _portal;
     [SerializeField] private List<LevelEnemy> _levelEnemys;
+    [SerializeField] private Characters _endTimeEnemys;
 
     private GameSettings _settings;
     private List<Vector3Int> _blockeds = new List<Vector3Int>();
@@ -22,13 +23,16 @@ public class WorldGenerator : MonoBehaviour
     private int _xFieldSize;
     private int _zFieldSize;
     private int _brickBlockAmount;
-    private int _enemyAmount;
+    private int _endTimeEnemyAmount = 10;
     private int[,] _world;
+    private int _levelTime;
+    private bool _endTimeEnemySpawned = false;
     private System.Random _random = new System.Random();
 
     private void Start()
     {
         _settings = GameSettings.Instance;
+        _settings.LevelTimeEnded += OnLevelTimeEnded;
         LevelSetting levelSetting = _settings.GetCurrentLevel();
         InitLevelSetting(levelSetting);
 
@@ -36,6 +40,12 @@ public class WorldGenerator : MonoBehaviour
         CreateBricksBlockAndBoosts();
         CreateEnemyPoints();
         ViewCreatedWorld();
+        _settings.StartLevelTimer(_levelTime);
+    }
+
+    private void OnDisable()
+    {
+        _settings.LevelTimeEnded -= OnLevelTimeEnded;
     }
 
     public void InitLevelSetting(LevelSetting levelSetting)
@@ -47,6 +57,7 @@ public class WorldGenerator : MonoBehaviour
         _stoneBlock = levelSetting.StoneBlock;
         _levelEnemys = levelSetting.Enemys.ToList();
         _levelBoosters = levelSetting.LevelBoost.ToList();
+        _levelTime = levelSetting.LevelTime;
         _world = new int[_xFieldSize, _zFieldSize];
     }
 
@@ -57,8 +68,6 @@ public class WorldGenerator : MonoBehaviour
             int startHideIndex = 0;
             int maxHideIndex = 0;
             int allBoosterAmount = 0;
-            //int j = 0;
-
 
             foreach (var booster in _levelBoosters)
                 allBoosterAmount += booster.Amount;
@@ -70,7 +79,7 @@ public class WorldGenerator : MonoBehaviour
 
                 for (int i = 0; i < hideBlockIndex.Length; i++)
                 {
-                    hideBlockIndex[i] = UnityEngine.Random.Range(startHideIndex, i * maxHideIndex + maxHideIndex);
+                    hideBlockIndex[i] = Random.Range(startHideIndex, i * maxHideIndex + maxHideIndex);
                     startHideIndex = hideBlockIndex[i] + 1;
                 }
 
@@ -88,6 +97,7 @@ public class WorldGenerator : MonoBehaviour
             }
         }
     }
+
     private int GetEnemyAmount()
     {
         int count = 0;
@@ -197,10 +207,33 @@ public class WorldGenerator : MonoBehaviour
                 if (_world[x,z] >= StartEnemyIndexes)
                 {
                     int index = _world[x, z] - StartEnemyIndexes;
-                    Characters enemy = Instantiate(_levelEnemys[index].Enemy, _worldZeroPoint.position + new Vector3(x, 0f, z), Quaternion.identity);
-                    _settings.AddEnemyOnList(enemy);
+                    CreateEnemy(_levelEnemys[index].Enemy, x, z);
                 }
             }
+
         }
+    }
+
+    private void CreateEnemy(Characters enemy, int xPos, int zPos)
+    {
+        Characters newEnemy = Instantiate(enemy, _worldZeroPoint.position + new Vector3(xPos, 0f, zPos), Quaternion.identity);
+        _settings.AddEnemyOnList(newEnemy);
+    }
+
+    private void OnLevelTimeEnded()
+    {
+        if (_endTimeEnemySpawned)
+            return;
+
+        if (_clearBlocks.Count >= _endTimeEnemyAmount)
+        {
+            for (int i = 0; i < _endTimeEnemyAmount; i++)
+            {
+                int index = Random.Range(0, _clearBlocks.Count);
+                Vector3Int position = _clearBlocks[index];
+                CreateEnemy(_endTimeEnemys, position.x, position.z);
+            }
+        }
+        _endTimeEnemySpawned = true;
     }
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _width: 15
   _height: 15
+  _levelTime: 300
   _brickBlockAmount: 37
   _brickBlock: {fileID: 151913761396702847, guid: 2ac5a1391bbfb094b94b062c3922cc0b, type: 3}
   _stoneBlock: {fileID: 7123055087300125352, guid: f08c9b13de3839c40928b3ba5a7eea1b, type: 3}
@@ -23,5 +24,3 @@ MonoBehaviour:
   _enemys:
   - Enemy: {fileID: 1263824757994787787, guid: 7c9d891fb61f2ad4f9ed56b63e74b2da, type: 3}
     Amount: 2
-  - Enemy: {fileID: 4168373895000579658, guid: f9db85b46c3090742ab25f54139ee1f9, type: 3}
-    Amount: 1
