@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSettings : MonoBehaviour
 {
@@ -15,13 +15,7 @@ public class GameSettings : MonoBehaviour
     [Header("Player")]
     [SerializeField] private PlayerMovement _playerTemplate;
     [SerializeField] private Bomb _templateBomb;
-    [SerializeField] private int _currentLevel = 0;
-    [SerializeField] private int _lifes;
-    [SerializeField] private float _speed;
-    [SerializeField] private int _bombAmount;
-    [SerializeField] private int _bombPower;
-    [SerializeField] private bool _canKickBomb;
-    [SerializeField] private bool _useShield;
+    [SerializeField] private StartProperties _currentProperties;
     [Header("Bomb Properties")]
     [SerializeField] private float _explodeDelay = 3f;
     [Header("Limit Properties")]
@@ -35,31 +29,41 @@ public class GameSettings : MonoBehaviour
     public KeyCode ForwardKey;
     public KeyCode BackKey;
     public KeyCode SetBombKey;
-    public KeyCode KickBombKey;
+    public KeyCode ControlBombKey;
 
+    #region New Game Player Properties
+    private int _currentLevel = 0;
+    [SerializeField]private int _lifes;
+    private float _speed;
+    private int _bombAmount;
+    private int _bombPower;
+    private bool _canControlBomb;
+    private bool _useShield;
+    #endregion
     private List<Characters> _levelEnemys = new List<Characters>();
     private List<LevelSetting> _levels = new List<LevelSetting>();
-    private BossStatsViewer _bossStatsViewer;
     private Characters _player;
+    //private float _boostSpeed = 0;
     private Portal _portal;
     private float _startSpeed;
     private int _currentTime;
     private WaitForSeconds _timer = new WaitForSeconds(1f);
     private Coroutine _coroutineTimer;
+    private EndGameViewer _endGameScreen;
 
     public int Lifes => _lifes;
     public float Speed => _speed;
     public float SpeedLevel => (_speed - _startSpeed) / BoostSpeedRate;
     public int Bomb => _bombAmount;
     public int Power => _bombPower;
-    public bool CanKick => _canKickBomb;
+    public bool CanControl => _canControlBomb;
     public bool UseShield => _useShield;
     public int Width => _levels[_currentLevel].Width;
     public int Height => _levels[_currentLevel].Height;
     public float ActivateDelay => _explodeDelay;
     public PlayerMovement Player => _playerTemplate;
     public bool LevelClear => _levelEnemys.Count == 0;
-    public BossStatsViewer BossStatsViewer => _bossStatsViewer;
+    public BossStatsViewer BossStatsPanel { get; private set; }
 
     public event Action<int, int> ChangedLevelTime;
     public event Action<int> ChangedEnemyCount;
@@ -74,6 +78,7 @@ public class GameSettings : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(this);
+        LoadGameProperties(_currentProperties);
         _startSpeed = _speed;
         LoadLevels();
     }
@@ -91,10 +96,9 @@ public class GameSettings : MonoBehaviour
         }
     }
 
-    public void InitBossStats(BossStatsViewer viewer)
-    {
-        _bossStatsViewer = viewer;
-    }
+    public void InitBossStats(BossStatsViewer viewer) => BossStatsPanel = viewer;
+
+    public void InitEndGameScreen(EndGameViewer screen) => _endGameScreen = screen;
 
     public int GetLevelNumber() => _currentLevel;
 
@@ -102,7 +106,6 @@ public class GameSettings : MonoBehaviour
     {
         _currentTime = delay;
         ChangedLevelTime?.Invoke(_currentTime, delay);
-        //_coroutineTimer = StartCoroutine(TimeTick(delay));
     }
 
     public LevelSetting GetCurrentLevel()
@@ -135,6 +138,29 @@ public class GameSettings : MonoBehaviour
     public void PickupBooster(Boost boost)
     {
         ChangePlayerProperties(boost);
+    }
+
+    public void RestartGame(StartProperties properties)
+    {
+        _currentProperties = properties;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GetExtraLife()
+    {
+        _lifes++;
+    }
+
+    private void LoadGameProperties(StartProperties currentProperties)
+    {
+        SavedProperties properties = currentProperties.GetSavedProperties();
+        _currentLevel = properties.Level;
+        _lifes = properties.Life;
+        _speed = properties.Speed;
+        _bombAmount = properties.BombAmount;
+        _bombPower = properties.BombPower;
+        _canControlBomb = properties.CanActivateControlBomb;
+        _useShield = properties.UseShield;
     }
 
     private void OnChangedLevel(Portal portal, bool nextLevel)
@@ -184,6 +210,7 @@ public class GameSettings : MonoBehaviour
         {
             //Show player dying screen;
             Debug.Log("Player is die!\nYou lose game! :)");
+            _endGameScreen.Show();
         }
     }
 
@@ -200,8 +227,8 @@ public class GameSettings : MonoBehaviour
         if (_bombPower < _maxBombPower)
             _bombPower += booster.BombPower ? BoostAmount : BoostZero;
 
-        if (_canKickBomb == false)
-            _canKickBomb = booster.Kick;
+        if (_canControlBomb == false)
+            _canControlBomb = booster.Control;
 
         if (_useShield == false)
             _useShield = booster.Shield;

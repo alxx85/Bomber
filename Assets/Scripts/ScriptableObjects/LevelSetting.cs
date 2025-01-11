@@ -30,16 +30,16 @@ public class Boost
     public bool Speed { get; private set; }
     public bool BombAmount { get; private set; }
     public bool BombPower { get; private set; }
-    public bool Kick { get; private set; }
+    public bool Control { get; private set; }
     public bool Shield { get; private set; }
 
-    public Boost(bool life, bool speed, bool amount, bool power, bool kick, bool shield)
+    public Boost(bool life, bool speed, bool amount, bool power, bool control, bool shield)
     {
         Life = life;
         Speed = speed;
         BombAmount = amount;
         BombPower = power;
-        Kick = kick;
+        Control = control;
         Shield = shield;
     }
 }

@@ -20,7 +20,7 @@ public abstract class Bosses : Characters
 
     private void Start()
     {
-        _bossStats = GameSettings.Instance.BossStatsViewer;
+        _bossStats = GameSettings.Instance.BossStatsPanel;
         _bossStats.gameObject.SetActive(true);
         _bossStats.Init(this);
         _maxHealth = health;

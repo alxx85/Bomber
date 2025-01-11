@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour
 
     public float CurrentRadius => _collider.radius;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rbody = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();

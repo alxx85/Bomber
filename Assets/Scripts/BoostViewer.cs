@@ -4,6 +4,7 @@ public class BoostViewer : MonoBehaviour, IDamageable
 {
     [SerializeField] private Booster _booster;
     [SerializeField] private SpriteRenderer _renderer;
+    [SerializeField] private AudioSource _pickupSFX;
 
     private bool _isActive = false;
 
@@ -11,8 +12,10 @@ public class BoostViewer : MonoBehaviour, IDamageable
     {
         if (other.TryGetComponent(out PlayerMovement player))
         {
-            Destroy(gameObject);
+            Destroy(gameObject, 0.2f);
             GameSettings.Instance.PickupBooster(_booster.GetBoost);
+            _pickupSFX.Play();
+            Destroy(this);
         }
     }
     

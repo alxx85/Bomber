@@ -9,10 +9,10 @@ public class Booster : ScriptableObject
     [SerializeField] private bool _speed;
     [SerializeField] private bool _addBombAmount;
     [SerializeField] private bool _addBombPower;
-    [SerializeField] private bool _kick;
+    [SerializeField] private bool _control;
     [SerializeField] private bool _shield;
 
     public Sprite Sprite => _sprite;
     public Color BackgroundColor => _color;
-    public Boost GetBoost => new Boost(_life, _speed, _addBombAmount, _addBombPower, _kick, _shield);
+    public Boost GetBoost => new Boost(_life, _speed, _addBombAmount, _addBombPower, _control, _shield);
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerAttacks : MonoBehaviour
 {
     [SerializeField] private Bomb _template;
@@ -10,10 +11,12 @@ public class PlayerAttacks : MonoBehaviour
     private List<Bomb> _bombsInstalled = new List<Bomb>();
     private GameSettings _setting;
     private PlayerInput _input;
+    private PlayerSFX _audio;
 
     private void Awake()
     {
         _input = GetComponent<PlayerInput>();
+        _audio = GetComponent<PlayerSFX>();
     }
 
     private void OnEnable()
@@ -47,6 +50,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (_setting.Bomb > 0 && _bombsInstalled.Count < _setting.Bomb)
         {
+            _audio.Play(AudioName.SetBomb);
             BombInstall();
         }
     }
@@ -54,7 +58,7 @@ public class PlayerAttacks : MonoBehaviour
     private void OnKickedBomb()
     { 
         //Hand activate bomb
-        if (_setting.CanKick && _bombsInstalled.Count > 0)
+        if (_setting.CanControl && _bombsInstalled.Count > 0)
         {
             _bombsInstalled[0].Activate();
         }

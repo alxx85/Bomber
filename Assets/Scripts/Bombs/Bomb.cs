@@ -5,21 +5,19 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    private const float FireDelay = .55f;
-
     [SerializeField] private LayerMask _blockedMask;
     [SerializeField] private Collider _collider;
     [SerializeField] private Fire _fireTemplate;
+    [SerializeField] private Transform _sfxTemplate;
 
     private GameSettings _setting;
     private Renderer _model;
     private List<Vector3> _possibleDirections = new List<Vector3> { Vector3.left, Vector3.forward, Vector3.back, Vector3.right };
     private WaitForSeconds _delay = new WaitForSeconds(0.25f);
     private Vector3 _correctionUp = new Vector3(0f, 0.5f, 0f);
+    private bool _isActivated;
 
     public event Action<Bomb> Exploded;
-
-    //public int BombIndex { get; private set; }
 
     private void Awake()
     {
@@ -44,7 +42,7 @@ public class Bomb : MonoBehaviour
     {
         _setting = GameSettings.Instance;
         
-        if (!_setting.CanKick)
+        if (!_setting.CanControl)
             Invoke(nameof(Explode), _setting.ActivateDelay);
     }
 
@@ -57,11 +55,17 @@ public class Bomb : MonoBehaviour
     {
         Instantiate(_fireTemplate, transform.position, _fireTemplate.transform.rotation);
 
+        if (_isActivated == false)
+        {
+            _isActivated = true;
+            Instantiate(_sfxTemplate, transform.position, Quaternion.identity);
+        }
+
         foreach (var direction in _possibleDirections)
         {
             StartCoroutine(CreatExplosion(direction));
         }
-        GetComponent<Collider>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
         _model.enabled = false;
         _collider.enabled = false;
         Destroy(gameObject, .1f);

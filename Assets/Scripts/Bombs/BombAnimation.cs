@@ -27,7 +27,7 @@ public class BombAnimation : MonoBehaviour
         if (_currentTime >= _totalTime)
             _currentTime -= _totalTime;
 
-        if (_setting.CanKick == false)
+        if (_setting.CanControl == false)
         {
             _currentColorTime += Time.deltaTime;
 

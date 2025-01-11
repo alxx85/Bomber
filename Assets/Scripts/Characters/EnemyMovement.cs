@@ -9,6 +9,7 @@ public class EnemyMovement : Movement
     [SerializeField] private float _stopMoveingDelay = .1f;
     [SerializeField] private bool _canChangingDirection;
     [SerializeField] private int _minChangingDirectionDistance = 2;
+    [SerializeField] private AudioSource _moveSFX;
 
     private float _blockedSearchDelay = .5f;
     private float _unblockedDelay = .8f;
@@ -17,6 +18,7 @@ public class EnemyMovement : Movement
     private Vector3 oldPosition;
     private bool _changingDirection;
     private int _currentDistance = 0;
+    private bool _isMoveing;
 
     private void Start()
     {
@@ -37,10 +39,22 @@ public class EnemyMovement : Movement
             Moveing(_speed);
             _animator.SetBool(MOVE, true);
             _currentDelay = _stopMoveingDelay;
+
+            if (_isMoveing == false)
+            {
+                _isMoveing = true;
+                _moveSFX.Play();
+            }
         }
         else
         {
             _animator.SetBool(MOVE, false);
+            
+            if (_isMoveing)
+            {
+                _isMoveing = false;
+                _moveSFX.Stop();
+            }
             _currentDelay -= Time.deltaTime;
 
             if (_currentDelay <= 0 && _isBlocked)
@@ -92,7 +106,6 @@ public class EnemyMovement : Movement
                 }
             }
         }
-
     }
 
     private void OnCollisionEnter(Collision collision)

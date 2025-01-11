@@ -34,6 +34,9 @@ public class BossStatsViewer : MonoBehaviour
 
     private void OnDisable()
     {
+        if (_boss == null)
+            return;
+
         _boss.ChangedHealth -= OnChangedHealth;
         _boss.ChangedTimer -= OnChangedTimer;
 
