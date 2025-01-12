@@ -143,3 +143,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bobmSFX: {fileID: 5533332361088307101}
+  _maxVolume: 0.8
+  _type: 1

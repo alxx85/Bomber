@@ -10,7 +10,9 @@ public class EnemyMovement : Movement
     [SerializeField] private bool _canChangingDirection;
     [SerializeField] private int _minChangingDirectionDistance = 2;
     [SerializeField] private AudioSource _moveSFX;
+    [SerializeField] private SoundType _soundType = SoundType.Characters;
 
+    private GameSettings _setting;
     private float _blockedSearchDelay = .5f;
     private float _unblockedDelay = .8f;
     private float _currentDelay;
@@ -19,6 +21,18 @@ public class EnemyMovement : Movement
     private bool _changingDirection;
     private int _currentDistance = 0;
     private bool _isMoveing;
+
+    private void OnEnable()
+    {
+        _setting = GameSettings.Instance;
+        _setting.ChangedVolume += OnChangedVolume;
+        OnChangedVolume();
+    }
+
+    private void OnDisable()
+    {
+        _setting.ChangedVolume -= OnChangedVolume;
+    }
 
     private void Start()
     {
@@ -122,5 +136,10 @@ public class EnemyMovement : Movement
             if (contactPosition != _rotateDirection)
                 player.GetComponent<Characters>().TakeDamage(AttackType.Enemy);
         }
+    }
+
+    private void OnChangedVolume()
+    {
+            _moveSFX.volume = _setting.GetVolume(_soundType);
     }
 }

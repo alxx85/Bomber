@@ -16,6 +16,8 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private PlayerMovement _playerTemplate;
     [SerializeField] private Bomb _templateBomb;
     [SerializeField] private StartProperties _currentProperties;
+    [SerializeField] private InputSettings _currentKeysSetting;
+    [SerializeField] private VolumeSetting _currentVolumeSetting;
     [Header("Bomb Properties")]
     [SerializeField] private float _explodeDelay = 3f;
     [Header("Limit Properties")]
@@ -23,34 +25,29 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private int _maxBombAmount = 8;
     [SerializeField] private int _maxBombPower = 10;
 
-    [Header("Player Input")]
-    public KeyCode LeftKey;
-    public KeyCode RightKey;
-    public KeyCode ForwardKey;
-    public KeyCode BackKey;
-    public KeyCode SetBombKey;
-    public KeyCode ControlBombKey;
-
-    #region New Game Player Properties
-    private int _currentLevel = 0;
-    [SerializeField]private int _lifes;
-    private float _speed;
-    private int _bombAmount;
-    private int _bombPower;
-    private bool _canControlBomb;
-    private bool _useShield;
-    #endregion
     private List<Characters> _levelEnemys = new List<Characters>();
     private List<LevelSetting> _levels = new List<LevelSetting>();
     private Characters _player;
-    //private float _boostSpeed = 0;
     private Portal _portal;
     private float _startSpeed;
     private int _currentTime;
     private WaitForSeconds _timer = new WaitForSeconds(1f);
     private Coroutine _coroutineTimer;
     private EndGameViewer _endGameScreen;
+    
+    #region New Game Player Properties
+    private int _currentLevel = 0;
+    private int _lifes;
+    private float _speed;
+    private int _bombAmount;
+    private int _bombPower;
+    private bool _canControlBomb;
+    private bool _useShield;
 
+
+    #endregion
+
+    public InputSettings InputKeys => _currentKeysSetting;
     public int Lifes => _lifes;
     public float Speed => _speed;
     public float SpeedLevel => (_speed - _startSpeed) / BoostSpeedRate;
@@ -67,6 +64,7 @@ public class GameSettings : MonoBehaviour
 
     public event Action<int, int> ChangedLevelTime;
     public event Action<int> ChangedEnemyCount;
+    public event Action ChangedVolume;
     public event Action LevelTimeEnded;
     public event Action ChangedPlayerProperties;
 
@@ -86,14 +84,10 @@ public class GameSettings : MonoBehaviour
     private void OnDisable()
     {
         if (_player != null)
-        {
             _player.Dying -= OnPlayerDying;
-        }
 
         foreach (var enemy in _levelEnemys)
-        {
             enemy.Dying -= OnEnemyDying;
-        }
     }
 
     public void InitBossStats(BossStatsViewer viewer) => BossStatsPanel = viewer;
@@ -151,6 +145,23 @@ public class GameSettings : MonoBehaviour
         _lifes++;
     }
 
+    public float GetVolume(SoundType type)
+    { 
+        return _currentVolumeSetting.GetVolumes(type);
+    }
+
+    public void SetVolume(SoundType type, float value)
+    {
+        _currentVolumeSetting.ChangeVolume(type, value);
+        ChangedVolume?.Invoke();
+    }
+
+    public void SetMute(bool mute)
+    {
+        _currentVolumeSetting.Muting(mute);
+        ChangedVolume?.Invoke();
+    }
+
     private void LoadGameProperties(StartProperties currentProperties)
     {
         SavedProperties properties = currentProperties.GetSavedProperties();
@@ -180,9 +191,7 @@ public class GameSettings : MonoBehaviour
         var levels = Resources.LoadAll("Levels/", typeof(LevelSetting));
         
         foreach (var item in levels)
-        {
             _levels.Add((LevelSetting)item);
-        }
     }
 
     private void OnEnemyDying(Characters enemy)
@@ -192,9 +201,7 @@ public class GameSettings : MonoBehaviour
         ChangedEnemyCount?.Invoke(_levelEnemys.Count);
 
         if (_levelEnemys.Count == 0)
-        {
             _portal.Activate();
-        }
     }
 
     private void OnPlayerDying(Characters player)
@@ -207,11 +214,7 @@ public class GameSettings : MonoBehaviour
     private void CheckAlive()
     {
         if (_lifes <= 0)
-        {
-            //Show player dying screen;
-            Debug.Log("Player is die!\nYou lose game! :)");
             _endGameScreen.Show();
-        }
     }
 
     private void ChangePlayerProperties(Boost booster)

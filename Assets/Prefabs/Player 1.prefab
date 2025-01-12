@@ -1644,6 +1644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _input: {fileID: 6915008512790089217}
+  _animationModifier: 0.01
 --- !u!114 &6915008512790089217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1670,6 +1671,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSource: {fileID: 1666451053446602996}
   _setBombSource: {fileID: 825663952181240104}
+  _maxVolume: 0.8
+  _soundType: 0
+  _audioModifiere: 0.05
 --- !u!82 &1666451053446602996
 AudioSource:
   m_ObjectHideFlags: 0

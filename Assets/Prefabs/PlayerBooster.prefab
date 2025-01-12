@@ -126,6 +126,7 @@ MonoBehaviour:
   _booster: {fileID: 0}
   _renderer: {fileID: 7620244599139736348}
   _pickupSFX: {fileID: -6542890267082335342}
+  _type: 1
 --- !u!82 &-6542890267082335342
 AudioSource:
   m_ObjectHideFlags: 0

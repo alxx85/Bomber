@@ -7,11 +7,10 @@ public class PlayerMovement : Movement
     private const string SPEED = "Speed";
 
     [SerializeField] private Inputs _input;
+    [SerializeField] private float _animationModifier = 0.25f;
 
     private GameSettings _settings;
     private PlayerSFX _audio;
-    private Camera_Controller _camera;
-    private float _audioModifiere = 0.25f;
     private bool _isMoveing;
 
     public Vector3 Direction => _rotateDirection;
@@ -39,8 +38,8 @@ public class PlayerMovement : Movement
         {
             _rotateDirection = _moveDirection;
             Moveing(_settings.Speed);
-            float animationSpeed = _settings.SpeedLevel;
-            _animator.SetFloat(SPEED, animationSpeed + 1);
+            float animationSpeed = _settings.SpeedLevel == 0 ? 1: 1 + _settings.SpeedLevel * _animationModifier;
+            _animator.SetFloat(SPEED, animationSpeed);
             _animator.SetBool(MOVE, true);
 
             if (_isMoveing == false)
