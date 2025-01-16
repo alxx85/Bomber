@@ -13,14 +13,15 @@ public class BombSFX : MonoBehaviour
     {
         _setting = GameSettings.Instance;
         _setting.ChangedVolume += OnChangedVolume;
+        _setting.ChangedPause += OnChangedPause;
         OnChangedVolume();
     }
 
     private void OnDisable()
     {
         _setting.ChangedVolume -= OnChangedVolume;
+        _setting.ChangedPause -= OnChangedPause;
     }
-
 
     private void Start()
     {
@@ -31,5 +32,16 @@ public class BombSFX : MonoBehaviour
     private void OnChangedVolume()
     {
         _bobmSFX.volume = _setting.GetVolume(_type) * _maxVolume;
+    }
+
+    private void OnChangedPause(bool pause)
+    {
+        //if (_bobmSFX.isPlaying)
+        //{
+        if (pause)
+            _bobmSFX.Pause();
+        else
+            _bobmSFX.UnPause();
+        //}
     }
 }

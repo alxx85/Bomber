@@ -9,6 +9,8 @@ public class VolumeSetting : ScriptableObject
     [SerializeField] private float _environments;
     [SerializeField] private float _music;
 
+    public bool Mute => _mute;
+
     public void ChangeVolume(SoundType type, float volume)
     {
         switch (type)

@@ -14,12 +14,14 @@ public class BoostViewer : MonoBehaviour, IDamageable
     {
         _settings = GameSettings.Instance;
         _settings.ChangedVolume += OnChangedVolume;
+        _settings.ChangedPause += OnChangedPause;
         OnChangedVolume();
     }
 
     private void OnDisable()
     {
         _settings.ChangedVolume -= OnChangedVolume;
+        _settings.ChangedPause -= OnChangedPause;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,5 +53,16 @@ public class BoostViewer : MonoBehaviour, IDamageable
     private void OnChangedVolume()
     {
         _pickupSFX.volume = _settings.GetVolume(_type);
+    }
+
+    private void OnChangedPause(bool pause)
+    {
+        //if (_pickupSFX.isPlaying)
+        //{
+            if (pause)
+                _pickupSFX.Pause();
+            else
+                _pickupSFX.UnPause();
+        //}
     }
 }

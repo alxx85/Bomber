@@ -43,11 +43,12 @@ public class GameSettings : MonoBehaviour
     private int _bombPower;
     private bool _canControlBomb;
     private bool _useShield;
-
+    private bool _gamePause;
 
     #endregion
 
     public InputSettings InputKeys => _currentKeysSetting;
+    public bool Muting => _currentVolumeSetting.Mute;
     public int Lifes => _lifes;
     public float Speed => _speed;
     public float SpeedLevel => (_speed - _startSpeed) / BoostSpeedRate;
@@ -64,6 +65,7 @@ public class GameSettings : MonoBehaviour
 
     public event Action<int, int> ChangedLevelTime;
     public event Action<int> ChangedEnemyCount;
+    public event Action<bool> ChangedPause;
     public event Action ChangedVolume;
     public event Action LevelTimeEnded;
     public event Action ChangedPlayerProperties;
@@ -160,6 +162,18 @@ public class GameSettings : MonoBehaviour
     {
         _currentVolumeSetting.Muting(mute);
         ChangedVolume?.Invoke();
+    }
+
+    public void GamePause(bool isPause)
+    {
+        _gamePause = isPause;
+
+        if (_gamePause)
+            Time.timeScale = 0;
+        else
+            Time.timeScale = 1;
+
+        ChangedPause?.Invoke(isPause);
     }
 
     private void LoadGameProperties(StartProperties currentProperties)

@@ -14,12 +14,19 @@ public class PlayerSFX : MonoBehaviour
     {
         _settings = GameSettings.Instance;
         _settings.ChangedVolume += OnChangedVolume;
+        _settings.ChangedPause += OnChangedPause;
         OnChangedVolume();
+    }
+
+    private void _settings_ChangedPause(bool obj)
+    {
+        throw new System.NotImplementedException();
     }
 
     private void OnDisable()
     {
         _settings.ChangedVolume -= OnChangedVolume;
+        _settings.ChangedPause -= OnChangedPause;
     }
 
     public void Play(AudioName name)
@@ -45,6 +52,20 @@ public class PlayerSFX : MonoBehaviour
     {
         _walkSource.volume = _settings.GetVolume(_soundType) * _maxVolume;
         _setBombSource.volume = _settings.GetVolume(_soundType) * _maxVolume;
+    }
+
+    private void OnChangedPause(bool pause)
+    {
+        if (pause)
+        {
+            _walkSource.Pause();
+            _setBombSource.Pause();
+        }
+        else
+        {
+            _walkSource.UnPause();
+            _setBombSource.UnPause();
+        }
     }
 }
 

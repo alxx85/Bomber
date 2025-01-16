@@ -26,12 +26,14 @@ public class EnemyMovement : Movement
     {
         _setting = GameSettings.Instance;
         _setting.ChangedVolume += OnChangedVolume;
+        _setting.ChangedPause += OnChangedPause;
         OnChangedVolume();
     }
 
     private void OnDisable()
     {
         _setting.ChangedVolume -= OnChangedVolume;
+        _setting.ChangedPause -= OnChangedPause;
     }
 
     private void Start()
@@ -141,5 +143,16 @@ public class EnemyMovement : Movement
     private void OnChangedVolume()
     {
             _moveSFX.volume = _setting.GetVolume(_soundType);
+    }
+
+    private void OnChangedPause(bool pause)
+    {
+        //if (_moveSFX.isPlaying)
+        //{
+        if (pause)
+            _moveSFX.Pause();
+        else
+            _moveSFX.UnPause();
+        //}
     }
 }
