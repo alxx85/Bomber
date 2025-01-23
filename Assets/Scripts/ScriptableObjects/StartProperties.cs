@@ -11,10 +11,33 @@ public class StartProperties : ScriptableObject
     [SerializeField] private bool _canActivateControlBomb = false;
     [SerializeField] private bool _useShield = false;
 
-    public SavedProperties GetSavedProperties()
+    public SavedProperties GetSavedProperties(string profileName)
     {
+        LoadProfileProperties(profileName);
+
         return new SavedProperties(_currentLevel, _lifes, _speed, _bombAmount, _bombPower, 
                                     _canActivateControlBomb, _useShield);
+    }
+
+    public void SaveProfile(string profileName, SavedProperties properties)
+    {
+        SaverPlayers.SavePlayer(profileName, properties);
+    }
+
+    private void LoadProfileProperties(string name)
+    {
+        var loadedProperties = SaverPlayers.LoadPlayer(name);
+
+        if (loadedProperties == null)
+            return;
+
+        _currentLevel = loadedProperties.Level;
+        _lifes = loadedProperties.Life;
+        _speed = loadedProperties.Speed;
+        _bombAmount = loadedProperties.BombAmount;
+        _bombPower = loadedProperties.BombPower;
+        _canActivateControlBomb = loadedProperties.CanActivateControlBomb;
+        _useShield = loadedProperties.UseShield;
     }
 }
 

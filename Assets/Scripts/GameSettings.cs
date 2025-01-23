@@ -34,8 +34,9 @@ public class GameSettings : MonoBehaviour
     private WaitForSeconds _timer = new WaitForSeconds(1f);
     private Coroutine _coroutineTimer;
     private EndGameViewer _endGameScreen;
-    
+
     #region New Game Player Properties
+    private string _name = "Player";
     private int _currentLevel = 0;
     private int _lifes;
     private float _speed;
@@ -78,6 +79,9 @@ public class GameSettings : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(this);
+        
+        _name = SaverPlayers.SelectedName;
+
         LoadGameProperties(_currentProperties);
         _startSpeed = _speed;
         LoadLevels();
@@ -90,6 +94,10 @@ public class GameSettings : MonoBehaviour
 
         foreach (var enemy in _levelEnemys)
             enemy.Dying -= OnEnemyDying;
+
+        SavedProperties currentProperties = new SavedProperties(_currentLevel, _lifes, _speed,
+                                            _bombAmount, _bombPower, _canControlBomb, _useShield);
+        _currentProperties.SaveProfile(_name, currentProperties);
     }
 
     public void InitBossStats(BossStatsViewer viewer) => BossStatsPanel = viewer;
@@ -178,7 +186,7 @@ public class GameSettings : MonoBehaviour
 
     private void LoadGameProperties(StartProperties currentProperties)
     {
-        SavedProperties properties = currentProperties.GetSavedProperties();
+        SavedProperties properties = currentProperties.GetSavedProperties(_name);
         _currentLevel = properties.Level;
         _lifes = properties.Life;
         _speed = properties.Speed;

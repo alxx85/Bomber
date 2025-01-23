@@ -31,12 +31,16 @@ public class PlayerAttacks : MonoBehaviour
         {
             foreach (var bomb in _bombsInstalled)
             {
-                bomb.Exploded -= OnExploded;
-                Destroy(bomb.gameObject);
+                try
+                {
+                    bomb.Exploded -= OnExploded;
+                    Destroy(bomb.gameObject);
+                }
+                catch { }
             }
             _bombsInstalled.Clear();
         }
-
+        
         _input.SetedBomb -= OnSetedBomb;
         _input.KickedBomb -= OnKickedBomb;
     }
