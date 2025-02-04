@@ -11,12 +11,21 @@ public class InputViewer : MonoBehaviour
     [SerializeField] private InputKeyPresenter _backKeyPresenter;
     [SerializeField] private InputKeyPresenter _setBombKeyPresenter;
     [SerializeField] private InputKeyPresenter _activateKeyPresenter;
+    [SerializeField] private InputSettings _defaultSettings;
 
     private InputSettings _settings;
 
     private void Start()
     {
-        _settings = GameSettings.Instance.InputKeys;
+        try
+        {
+            _settings = GameSettings.Instance.InputKeys;
+        }
+        catch 
+        {
+            _settings = _defaultSettings;
+        }
+        
         TMP_Dropdown.OptionData option;
 
         KeyCode[] keys = System.Enum.GetValues(typeof(KeyCode)) as KeyCode[];

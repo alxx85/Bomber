@@ -12,14 +12,39 @@ public class ProfileViewer : MonoBehaviour
 
     private void OnEnable()
     {
-        _lifeText.Show(GameSettings.Instance.Lifes.ToString());
-        _speedText.Show(GameSettings.Instance.SpeedLevel.ToString());
-        _bobmText.Show(GameSettings.Instance.Bomb.ToString());
-        _distanceText.Show(GameSettings.Instance.Power.ToString());
 
-        _shieldText.Show(GameSettings.Instance.UseShield? "Yes":"No");
+        try
+        {
+            _lifeText.Show(GameSettings.Instance.Lifes.ToString());
+            _speedText.Show(GameSettings.Instance.SpeedLevel.ToString());
+            _bobmText.Show(GameSettings.Instance.Bomb.ToString());
+            _distanceText.Show(GameSettings.Instance.Power.ToString());
+            _shieldText.Show(GameSettings.Instance.UseShield ? "Yes" : "No");
+            _controlText.Show(GameSettings.Instance.CanControl ? "Yes" : "No");
+            _levelText.Show((1 + GameSettings.Instance.GetLevelNumber()).ToString());
+        }
+        catch
+        {
+            SavedProperties properties = SaverPlayers.LoadPlayer(SaverPlayers.SelectedName);
+
+            _lifeText.Show(properties.Life.ToString());
+            _speedText.Show((properties.Speed - 3).ToString());
+            _bobmText.Show(properties.BombAmount.ToString());
+            _distanceText.Show(properties.BombPower.ToString());
+            _shieldText.Show(properties.UseShield ? "Yes" : "No");
+            _controlText.Show(properties.CanActivateControlBomb ? "Yes" : "No");
+            _levelText.Show((properties.Level).ToString());
+
+        }
+
+        //_lifeText.Show(GameSettings.Instance.Lifes.ToString());
+        //_speedText.Show(GameSettings.Instance.SpeedLevel.ToString());
+        //_bobmText.Show(GameSettings.Instance.Bomb.ToString());
+        //_distanceText.Show(GameSettings.Instance.Power.ToString());
+
+        //_shieldText.Show(GameSettings.Instance.UseShield? "Yes":"No");
         
-        _controlText.Show(GameSettings.Instance.CanControl ? "Yes" : "No");
-        _levelText.Show((1 + GameSettings.Instance.GetLevelNumber()).ToString());
+        //_controlText.Show(GameSettings.Instance.CanControl ? "Yes" : "No");
+        //_levelText.Show((1 + GameSettings.Instance.GetLevelNumber()).ToString());
     }
 }

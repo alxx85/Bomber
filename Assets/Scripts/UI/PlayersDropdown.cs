@@ -11,19 +11,22 @@ public class PlayersDropdown : MonoBehaviour
     private void Start()
     {
         _dropdown = GetComponent<TMP_Dropdown>();
+        Refresh();
+    }
+
+    public void Refresh()
+    {
+        _dropdown.options.Clear();
 
         List<string> players = SaverPlayers.GetAllProfile();
+        _dropdown.options.Add(new TMP_Dropdown.OptionData("New profile"));
+
         for (int i = 0; i < players.Count; i++)
         {
             _dropdown.options.Add(new TMP_Dropdown.OptionData(players[i]));
 
             if (SaverPlayers.SelectedName == players[i])
-                _dropdown.value = i;
+                _dropdown.value = i + 1;
         }
-    }
-
-    void Update()
-    {
-        
     }
 }

@@ -1,7 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,6 +12,9 @@ public class StartScreen : MonoBehaviour
     [SerializeField] private Button _profileButton;
     [SerializeField] private Button _settingButton;
     [SerializeField] private Button _quitButton;
+    [SerializeField] private ProfileMenuViewer _profileMenu;
+    [SerializeField] private SettingsViewer _settingsMenu;
+    [SerializeField] private VolumeSetting _defaultVolume;
 
     private void Start()
     {
@@ -22,6 +23,8 @@ public class StartScreen : MonoBehaviour
         _profileButton.onClick.AddListener(OnProfileUsed);
         _settingButton.onClick.AddListener(OnSettingUsed);
         _quitButton.onClick.AddListener(OnQuitUsed);
+
+        SaverPlayers.LoadVolumeSetting(_defaultVolume);
     }
 
     private void OnQuitUsed()
@@ -31,12 +34,13 @@ public class StartScreen : MonoBehaviour
 
     private void OnSettingUsed()
     {
-        throw new NotImplementedException();
+        _settingsMenu.gameObject.SetActive(true);
     }
 
     private void OnProfileUsed()
     {
-        throw new NotImplementedException();
+        _profileMenu.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     private void OnStartUsed()

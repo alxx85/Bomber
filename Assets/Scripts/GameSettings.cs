@@ -29,7 +29,7 @@ public class GameSettings : MonoBehaviour
     private List<LevelSetting> _levels = new List<LevelSetting>();
     private Characters _player;
     private Portal _portal;
-    private float _startSpeed;
+    private float _startSpeed = 3f;
     private int _currentTime;
     private WaitForSeconds _timer = new WaitForSeconds(1f);
     private Coroutine _coroutineTimer;
@@ -83,7 +83,6 @@ public class GameSettings : MonoBehaviour
         _name = SaverPlayers.SelectedName;
 
         LoadGameProperties(_currentProperties);
-        _startSpeed = _speed;
         LoadLevels();
     }
 
@@ -97,7 +96,7 @@ public class GameSettings : MonoBehaviour
 
         SavedProperties currentProperties = new SavedProperties(_currentLevel, _lifes, _speed,
                                             _bombAmount, _bombPower, _canControlBomb, _useShield);
-        _currentProperties.SaveProfile(_name, currentProperties);
+        _currentProperties.SaveProfile(_name, currentProperties, _currentKeysSetting);
     }
 
     public void InitBossStats(BossStatsViewer viewer) => BossStatsPanel = viewer;

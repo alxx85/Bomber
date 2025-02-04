@@ -19,9 +19,9 @@ public class StartProperties : ScriptableObject
                                     _canActivateControlBomb, _useShield);
     }
 
-    public void SaveProfile(string profileName, SavedProperties properties)
+    public void SaveProfile(string profileName, SavedProperties properties, InputSettings profileKeys)
     {
-        SaverPlayers.SavePlayer(profileName, properties);
+        SaverPlayers.SavePlayer(profileName, properties, profileKeys);
     }
 
     private void LoadProfileProperties(string name)

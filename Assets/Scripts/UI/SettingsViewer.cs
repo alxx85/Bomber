@@ -16,7 +16,12 @@ public class SettingsViewer : MonoBehaviour
         _volumeButton.onClick.AddListener(() => { ChangePanel(ViewPanel.Volume); });
         _inputButton.onClick.AddListener(() => { ChangePanel(ViewPanel.Input); });
         ChangePanel(ViewPanel.Profile);
-        GameSettings.Instance.GamePause(true);
+        
+        try
+        {
+            GameSettings.Instance.GamePause(true);
+        }
+        catch { }
     }
 
     private void OnDisable()
@@ -24,7 +29,12 @@ public class SettingsViewer : MonoBehaviour
         _profileButton.onClick.RemoveListener(() => { ChangePanel(ViewPanel.Profile); });
         _volumeButton.onClick.RemoveListener(() => { ChangePanel(ViewPanel.Volume); });
         _inputButton.onClick.RemoveListener(() => { ChangePanel(ViewPanel.Input); });
-        GameSettings.Instance.GamePause(false);
+        
+        try
+        {
+            GameSettings.Instance.GamePause(false);
+        }
+        catch { }
     }
 
     private void ChangePanel(ViewPanel panel)
